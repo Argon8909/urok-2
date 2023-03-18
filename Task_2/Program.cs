@@ -1,3 +1,4 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 Console.WriteLine("новая ветка!");
+Console.WriteLine("новая ветка!");
