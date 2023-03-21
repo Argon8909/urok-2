@@ -6,9 +6,7 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("новая ветка!");
-            Console.WriteLine("Hello World33!");
-            Console.WriteLine("Hello World22!");
+           
         }
     }
 }
