@@ -25,7 +25,7 @@ double ParseOrRerun(string? inputValue)
     if (!parsed)
     {
         Console.WriteLine("Ошибка ввода! Введите заново");
-        Main();
+        return ParseOrRerun(Console.ReadLine());
     }
 
     return result;
