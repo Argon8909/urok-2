@@ -1,31 +1,30 @@
 ﻿using System.Text;
 
-int[] Arr = Array.ConvertAll(Input().Split(' '), int.Parse);
-
-
-
-Input("Введите элементы массива через пробел: ");
+int[] Arr = Array.ConvertAll(Input("Введите элементы массива через пробел: ").Split(' '), int.Parse);
 
 OutputResult();
 
 
-
-int[] ConvertToArr(string input )
-{
-    int[] Arr = Array.ConvertAll(input.Split(' '), int.Parse);
-    return Arr;
-}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 
 
 string Input(string? comment = null)
 {
     if (comment != null)
     {
-      Console.Write(comment);  
+        Console.WriteLine(comment);  
     }
     
-    string input = Console.ReadLine().Trim().Is;
-    return input;
+    string input = Console.ReadLine().Trim();
 
+    while (!input.All(c => Char.IsDigit(c) || c == ' '))
+    {
+        Console.WriteLine($"Ошибка ввода! Строка не должна содержать букв, знаков или других символов. Введите заново!");
+        input = Console.ReadLine().Trim();
+    }
+    
+    return input;
 }
 
 void OutputResult()
@@ -142,4 +141,18 @@ int SumElement(int[] arr)
     }
 
     return sum;
+}
+
+int ParseOrRerun(string? inputValue)
+{
+    int result;
+    var parsed = int.TryParse(inputValue, out result);
+
+    if (!parsed)
+    {
+        Console.WriteLine("Ошибка ввода! Введите заново");
+        return ParseOrRerun(Console.ReadLine());
+    }
+
+    return result;
 }
