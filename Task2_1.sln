@@ -4,9 +4,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task_2", "Task_2\Task_2.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{7AD31583-204A-4AEC-8B19-C5770C2C9F34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "дз-4 задача-1", "дз-4 задача-1\дз-4 задача-1.csproj", "{5AF42974-7D52-4A34-9264-E5C3F618C29B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "дз-6 - все методы в классах", "дз-6 - все методы в классах\дз-6 - все методы в классах.csproj", "{5AF42974-7D52-4A34-9264-E5C3F618C29B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ДЗ-6", "ДЗ-6\ДЗ-6.csproj", "{9BF0F256-8BA7-4A2F-A03D-0478658A6803}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Class Car", "Class Car\Class Car.csproj", "{C674A6D1-53B8-4131-A965-6E9A747D9168}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fibb", "Fibb\Fibb.csproj", "{08A2D33D-3CE5-4F18-BA1A-EE8C1044E8C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,9 +28,13 @@ Global
 		{5AF42974-7D52-4A34-9264-E5C3F618C29B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AF42974-7D52-4A34-9264-E5C3F618C29B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AF42974-7D52-4A34-9264-E5C3F618C29B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9BF0F256-8BA7-4A2F-A03D-0478658A6803}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9BF0F256-8BA7-4A2F-A03D-0478658A6803}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9BF0F256-8BA7-4A2F-A03D-0478658A6803}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9BF0F256-8BA7-4A2F-A03D-0478658A6803}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C674A6D1-53B8-4131-A965-6E9A747D9168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C674A6D1-53B8-4131-A965-6E9A747D9168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C674A6D1-53B8-4131-A965-6E9A747D9168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C674A6D1-53B8-4131-A965-6E9A747D9168}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08A2D33D-3CE5-4F18-BA1A-EE8C1044E8C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08A2D33D-3CE5-4F18-BA1A-EE8C1044E8C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08A2D33D-3CE5-4F18-BA1A-EE8C1044E8C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08A2D33D-3CE5-4F18-BA1A-EE8C1044E8C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

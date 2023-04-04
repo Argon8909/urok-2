@@ -1,4 +1,4 @@
-﻿namespace дз_4;
+﻿namespace дз_4_4;
 
 using System.Text;
 
