@@ -25,7 +25,7 @@ public class Car
 
     public sbyte FuelControl()
     {
-        if (_fuelСonsumption > _mileage)
+        if (_fuelСonsumption < _mileage)
         {
             _fuel = (sbyte) (_fuelСonsumption - _mileage);
             if (_fuel <= 0)
