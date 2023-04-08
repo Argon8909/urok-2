@@ -1,5 +1,6 @@
 ﻿using System;
 using Cars;
+using AuxiliaryMethods;
 
 
 
@@ -17,9 +18,11 @@ using Cars;
         car.GoOneMile();
         Console.WriteLine($"Еду...");
     } while (car.Fuel > 10);
+    
     Console.WriteLine($"В баке {car.Fuel}% топлива");
     Console.WriteLine($"Заправьте автомобиль!");
-    car.FuelReplenishment(Console.ReadLine());
+    
+   // car.FuelReplenishment(Console.ReadLine());
 
     Console.WriteLine(car.GetMileage());
 
