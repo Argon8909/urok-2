@@ -29,6 +29,7 @@ namespace Cars
         public sbyte Fuel
         {
             get => _fuel;
+            
             private set
             {
                 if (value < 0)
@@ -50,7 +51,7 @@ namespace Cars
         {
             if (_fuelСonsumption < _mileage)
             {
-                Fuel = (sbyte) (_fuelСonsumption - _mileage);
+                Fuel -= (sbyte) (_mileage -_fuelСonsumption );
                 if (Fuel == 0)
                 {
                     Console.WriteLine("Топливо кончилось!");
