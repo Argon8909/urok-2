@@ -3,7 +3,7 @@ namespace InputLib;
 
 public class AuxiliaryMethods
 {
-    public  string Input(string? comment = null)
+    public  string InputIsDigit(string? comment = null)
     {
         if (comment != null)
         {
@@ -12,7 +12,7 @@ public class AuxiliaryMethods
 
         string input = Console.ReadLine().Trim();
 
-        while (!input.All(c => Char.IsDigit(c) || c == ' '))
+        while (!input.All(c => Char.IsDigit(c)))
         {
             Console.WriteLine(
                 $"Ошибка ввода! Строка не должна содержать букв, знаков или других символов. Введите заново!");
@@ -22,7 +22,7 @@ public class AuxiliaryMethods
         return input;
     }
     
-    public int ParseOrRerun(string? inputValue)
+    public string ParseOrRerun(string? inputValue)
     {
         int result;
         var parsed = int.TryParse(inputValue, out result);
@@ -33,6 +33,6 @@ public class AuxiliaryMethods
             return ParseOrRerun(Console.ReadLine());
         }
 
-        return result;
+        return result.ToString();
     }
 }
