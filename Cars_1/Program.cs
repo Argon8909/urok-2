@@ -22,9 +22,8 @@ do
 Console.WriteLine($"В баке {car.Fuel}% топлива");
 Console.WriteLine($"Заправьте автомобиль!");
 
-
-
-Console.WriteLine(car.FuelReplenishment(pars.InputIsDigit(Console.ReadLine())));
+Console.WriteLine(car.FuelReplenishment("50"));
+//Console.WriteLine(car.FuelReplenishment(pars.InputIsDigit(Console.ReadLine())));
 //Console.WriteLine($"В баке {car.Fuel}% топлива");
 
 do

@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputLib", "InputLib\InputL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cars_1", "Cars_1\Cars_1.csproj", "{7151FD36-2BB1-46C8-A41B-AD4150AAD4BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Car", "Car\Car.csproj", "{2535D471-3E7B-41D3-98D7-C1A0AB9A3FC5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{7151FD36-2BB1-46C8-A41B-AD4150AAD4BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7151FD36-2BB1-46C8-A41B-AD4150AAD4BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7151FD36-2BB1-46C8-A41B-AD4150AAD4BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2535D471-3E7B-41D3-98D7-C1A0AB9A3FC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2535D471-3E7B-41D3-98D7-C1A0AB9A3FC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2535D471-3E7B-41D3-98D7-C1A0AB9A3FC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2535D471-3E7B-41D3-98D7-C1A0AB9A3FC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
