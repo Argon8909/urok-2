@@ -18,19 +18,21 @@ namespace Cars
         private double _mileage;
         private int _year;
 
-        public Car(int year, CarColor color, int i)
+        public Car(int year, CarColor color, double mileage, sbyte fuel = 100)
+        {
+            _color = color;
+            _year = year;
+            _mileage = mileage;
+            _fuel = fuel;
+        }
+        
+        public Car(int year, CarColor color)
         {
             _color = color;
             _year = year;
             
         }
-        
-        public Car( double mileage, sbyte fuel = 100)
-        {
-            
-            _mileage = mileage;
-            _fuel = fuel;
-        }
+
 
         public sbyte Fuel
         {
@@ -107,3 +109,14 @@ namespace Cars
 
 
 }
+
+/*
+   public Car( double mileage, sbyte fuel = 100)
+        {
+            
+            _mileage = mileage;
+            _fuel = fuel;
+        }
+
+
+*/

@@ -3,13 +3,12 @@ namespace InputLib;
 
 public class AuxiliaryMethods
 {
-    public  string InputIsDigit(string? comment = null)
+    public  string InputDigit(string? comment = null)
     {
         if (comment != null)
         {
             Console.WriteLine(comment);
         }
-
         string input = Console.ReadLine().Trim();
 
         while (!input.All(c => Char.IsDigit(c)))
@@ -36,3 +35,11 @@ public class AuxiliaryMethods
         return result.ToString();
     }
 }
+
+/* string? comment = null
+
+if (comment != null)
+        {
+            Console.WriteLine(comment);
+        }
+        */
