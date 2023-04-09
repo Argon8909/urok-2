@@ -18,10 +18,16 @@ namespace Cars
         private double _mileage;
         private int _year;
 
-        public Car(int year, CarColor color, double mileage, sbyte fuel = 100)
+        public Car(int year, CarColor color)
         {
             _color = color;
             _year = year;
+            
+        }
+        
+        public Car( double mileage, sbyte fuel = 100)
+        {
+            
             _mileage = mileage;
             _fuel = fuel;
         }
@@ -61,9 +67,9 @@ namespace Cars
             _fuelСonsumption = _mileage;
         }
 
-        public string FuelReplenishment(sbyte f)
+        public string FuelReplenishment(string f)
         {
-            Fuel += f;
+            Fuel += sbyte.Parse(f);
             if (Fuel == 100)
             {
                 return "Мамшина заправлена на 100%!";
@@ -101,3 +107,4 @@ namespace Cars
 
 
 }
+

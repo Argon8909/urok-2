@@ -21,8 +21,11 @@ do
 
 Console.WriteLine($"В баке {car.Fuel}% топлива");
 Console.WriteLine($"Заправьте автомобиль!");
-car.FuelReplenishment(sbyte.Parse(pars.InputIsDigit(Console.ReadLine())));
-Console.WriteLine($"В баке {car.Fuel}% топлива");
+
+
+
+Console.WriteLine(car.FuelReplenishment(pars.InputIsDigit(Console.ReadLine())));
+//Console.WriteLine($"В баке {car.Fuel}% топлива");
 
 do
 {
@@ -31,6 +34,8 @@ do
 } while (car.Fuel > 10);
 
 Console.WriteLine(car.GetMileage());
+
+
 
 //Console.WriteLine(car.GetCarYear());
 
