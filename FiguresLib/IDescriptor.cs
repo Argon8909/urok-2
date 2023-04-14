@@ -2,5 +2,5 @@
 
 public interface IDescriptor
 {
-    
+    public FigureType FigureType { get; }
 }

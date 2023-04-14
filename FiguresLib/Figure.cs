@@ -1,7 +1,7 @@
 ﻿using System;
 namespace FiguresLib
 {
-    public class Figure
+    public class Figure: IParameters , IDescriptor
     {
         public virtual double Area { get; }
         

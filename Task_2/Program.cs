@@ -5,9 +5,10 @@ using FiguresLib;
 
 
 
+
     class Program
     {
-        
+        /// Логику ещё не успел сделать, но реализовал интерфейсы
         
         static void Main(string[] args)
         {
