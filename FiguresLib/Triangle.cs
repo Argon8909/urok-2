@@ -1,4 +1,5 @@
-﻿namespace FiguresLib;
+﻿using System;
+namespace FiguresLib;
 
 public class Triangle : Figure
 {
@@ -17,7 +18,7 @@ public class Triangle : Figure
 
     public double C => _c;
 
-    public override double Area => throw new Exception("Не умею");
+    public override double Area =>Math.Sqrt(Perimeter / 2 * (Perimeter / 2 - _a) * (Perimeter / 2 - _b) * (Perimeter / 2 - _c));
     public override double Perimeter => _a + _b + _c;
 
     public override FigureType FigureType => FigureType.Triangle;

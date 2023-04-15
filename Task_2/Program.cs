@@ -8,29 +8,78 @@ using FiguresLib;
 
     class Program
     {
-        /// Логику ещё не успел сделать, но реализовал интерфейсы
+        
         
         static void Main(string[] args)
         {
-            
-            Figure[] figures = new Figure[] { new Circle(4, 1), new Square(55, 2), new Circle(3, 4), new Square(33, 5) };
+            StringBuilder sb = new StringBuilder();
+            Figure[] figures = new Figure[] { new Circle(4, 1), new Square(55, 2), new Triangle(33, 19, 20, 3) };
 
             foreach (var figure in figures)
             {
-                Console.WriteLine(figure.GetTitle());
+               //sb = $"{figure.GetTitle()}"
+                Console.WriteLine($"{figure.GetTitle()} периметр: {figure.Perimeter}, площадь: {figure.Area}");
             }
             
-            //var d = new D();
-            var a = new A();
-            var b = new B();
+        }
+        
+    }
+    
+    /*
+      static string CalculateAreas(List<Figure> figures)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var figure in figures)
+            {
+                var str = $"{figure.GetTitle()}:{figure.Area:F1}";
+                sb.AppendLine(str);
+            }
 
-           // var a = new A();
-            
-            bool result = b is A;
-            
-            Console.WriteLine(result);
+            return sb.ToString();
+        }
+        
+        static string CalculatePerimeters(List<Figure> figures)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var figure in figures)
+            {
+                var str = $"{figure.GetTitle()}:{figure.Perimeter:F1}";
+                sb.AppendLine(str);
+            }
 
-            return;
+            return sb.ToString();
+        }
+     
+     * public class A
+        {
+            protected string S { get; set; }
+            public int I { get; set; }
+        }
+
+        public class B : A
+        {
+            public int K { get; set; }
+
+            public void Temp()
+            {
+                S = "sdfsdf";
+            }
+        }
+    
+        public class C : B
+        {
+            public int G { get; set; }
+
+        }
+    
+    
+        public class D : C
+        {
+            public int LL { get; set; }
+
+        }
+     *
+     *  return;
             // Circle:5
             // Square:10
             // Triangle:10,4,4
@@ -105,63 +154,5 @@ using FiguresLib;
             //
             // Console.WriteLine("Perimeters.");
             // Console.WriteLine(CalculatePerimeters(figures));
-            
-        }
-
-        static string CalculateAreas(List<Figure> figures)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (var figure in figures)
-            {
-                var str = $"{figure.GetTitle()}:{figure.Area:F1}";
-                sb.AppendLine(str);
-            }
-
-            return sb.ToString();
-        }
-        
-        static string CalculatePerimeters(List<Figure> figures)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (var figure in figures)
-            {
-                var str = $"{figure.GetTitle()}:{figure.Perimeter:F1}";
-                sb.AppendLine(str);
-            }
-
-            return sb.ToString();
-        }
-    }
-    
-    /*
-     * public class A
-        {
-            protected string S { get; set; }
-            public int I { get; set; }
-        }
-
-        public class B : A
-        {
-            public int K { get; set; }
-
-            public void Temp()
-            {
-                S = "sdfsdf";
-            }
-        }
-    
-        public class C : B
-        {
-            public int G { get; set; }
-
-        }
-    
-    
-        public class D : C
-        {
-            public int LL { get; set; }
-
-        }
-     * 
     */
     
