@@ -17,7 +17,8 @@ public class Card
             _moneyAmount = value;
         }
     }
-
+ 
+    public int CashbackMoneybox { get; private set; }
     public List<string> PaymentsHistory { get; } = new List<string>();
 
     public void Replenishment(int money)
@@ -45,6 +46,7 @@ public class Card
         {
             OnPayMessage?.Invoke($"Недостаточно средств на счету. Баланс карты: {MoneyAmount} р. ");
         }
+        
     }
 
     public int GetCashback()
@@ -56,7 +58,8 @@ public class Card
 /*
 public class Card
 {
-    public delegate void PayOperation(string message);
+    public delegate void PayOperation(string m2
+    52ььessage);
 
     public PayOperation? OnPayMessage;
 

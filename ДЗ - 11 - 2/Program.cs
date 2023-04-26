@@ -27,6 +27,7 @@ class Program
 
         Console.WriteLine("");
         Console.ReadKey();
+        TransportCard.OnPayMessage -= ShowOperation;
         Main();
     }
 }
