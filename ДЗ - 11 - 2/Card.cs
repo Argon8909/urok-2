@@ -1,6 +1,5 @@
 ﻿namespace ДЗ___11___2;
 
-
 public class Card
 {
     public delegate void PayOperation(string message);
@@ -12,14 +11,11 @@ public class Card
     public int MoneyAmount
     {
         get => _moneyAmount;
-        private set
-        {
-            _moneyAmount = value;
-        }
+        private set { _moneyAmount = value; }
     }
- 
-    public int CashbackMoneybox { get; private set; }
-    public List<string> PaymentsHistory { get; } = new List<string>();
+
+    public int CashbackMoneyBox { get; private set; }
+    public List<string> PaymentsHistory { get; } = new ();
 
     public void Replenishment(int money)
     {
@@ -51,58 +47,15 @@ public class Card
 
     private void SetCashback(int cashback)
     {
-        CashbackMoneybox += cashback;
+        CashbackMoneyBox += cashback;
     }
-    
-    public int GetCashback()
+
+    public int GetCashback() 
     {
-        return CashbackMoneybox;                      //PaymentsHistory.Count * 5;
+        return CashbackMoneyBox; 
     }
 }
 
 /*
-public class Card
-{
-    public delegate void PayOperation(string m2
-    52ььessage);
 
-    public PayOperation? OnPayMessage;
-
-    private int _moneyAmount;
-
-    public int MoneyAmount
-    {
-        get => _moneyAmount;
-        private set
-        {
-            _moneyAmount = value;
-        }
-    }
-
-    public void Replenishment(int money)
-    {
-        if (money > 0)
-        {
-            MoneyAmount += money;
-            OnPayMessage?.Invoke($"Карта пополнена на {money} р. Баланс карты: {MoneyAmount} р.");
-        }
-        else
-        {
-            OnPayMessage?.Invoke($"Неверное значение!!! ");
-        }
-    }
-
-    public void Pay(int money = 30)
-    {
-        if (MoneyAmount >= money)
-        {
-            MoneyAmount -= money;
-            OnPayMessage?.Invoke($"Списано {money} р. Баланс карты: {MoneyAmount} р.");
-        }
-        else
-        {
-            OnPayMessage?.Invoke($"Недостаточно средств на счету. Баланс карты: {MoneyAmount} р. ");
-        }
-    }
-}
 */
