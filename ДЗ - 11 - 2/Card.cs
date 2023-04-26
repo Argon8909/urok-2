@@ -41,15 +41,19 @@ public class Card
             MoneyAmount -= money;
             OnPayMessage?.Invoke($"Списано {money} р. Баланс карты: {MoneyAmount} р.");
             PaymentsHistory.Add($"- {money} р. Баланс карты: {MoneyAmount} р.");
-            CashbackMoneybox += money / 10;
+            SetCashback(money / 10);
         }
         else
         {
             OnPayMessage?.Invoke($"Недостаточно средств на счету. Баланс карты: {MoneyAmount} р. ");
         }
-        
     }
 
+    private void SetCashback(int cashback)
+    {
+        CashbackMoneybox += cashback;
+    }
+    
     public int GetCashback()
     {
         return CashbackMoneybox;                      //PaymentsHistory.Count * 5;
