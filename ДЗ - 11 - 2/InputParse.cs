@@ -1,6 +1,5 @@
 ﻿namespace ДЗ___11___2;
 
-
 public static class InputParse
 {
     private static int ParseStringToInt(string inputValue)

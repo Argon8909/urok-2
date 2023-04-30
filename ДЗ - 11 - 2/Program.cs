@@ -6,7 +6,7 @@ static class Program
 
     public static void Main()
     {
-        TransportCard.OnPayMessage += ShowOperation;
+        TransportCard.MoneyOperationsMessage += ShowOperation;
         TransportCard.Replenishment(new Random().Next(1, 60));
         TransportCard.Pay(x => x >= 30);
         Console.WriteLine($"Кешбек: {TransportCard.GetCashback()} р.");
@@ -24,7 +24,7 @@ static class Program
 
         Console.WriteLine("");
         Console.ReadKey();
-        TransportCard.OnPayMessage -= ShowOperation;
+        TransportCard.MoneyOperationsMessage -= ShowOperation;
         Main();
     }
 }

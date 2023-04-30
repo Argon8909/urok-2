@@ -4,7 +4,7 @@ public class Card
 {
     public delegate void PayOperation(string message);
 
-    public PayOperation? OnPayMessage;
+    public PayOperation? MoneyOperationsMessage;
 
     private int _moneyAmount;
 
@@ -22,11 +22,11 @@ public class Card
         if (money > 0)
         {
             MoneyAmount += money;
-            OnPayMessage?.Invoke($"Карта пополнена на {money} р. Баланс карты: {MoneyAmount} р.");
+            MoneyOperationsMessage?.Invoke($"Карта пополнена на {money} р. Баланс карты: {MoneyAmount} р.");
         }
         else
         {
-            OnPayMessage?.Invoke($"Неверное значение!!! ");
+            MoneyOperationsMessage?.Invoke($"Была попытка пополнения на {money} рублей!!! ");
         }
     }
 
@@ -35,13 +35,13 @@ public class Card
         if (canPay(MoneyAmount))
         {
             MoneyAmount -= money;
-            OnPayMessage?.Invoke($"Списано {money} р. Баланс карты: {MoneyAmount} р.");
+            MoneyOperationsMessage?.Invoke($"Списано {money} р. Баланс карты: {MoneyAmount} р.");
             PaymentsHistory.Add($"- {money} р. Баланс карты: {MoneyAmount} р.");
             SetCashback(money / 10);
         }
         else
         {
-            OnPayMessage?.Invoke($"Недостаточно средств на счету. Баланс карты: {MoneyAmount} р. ");
+            MoneyOperationsMessage?.Invoke($"Недостаточно средств на счету. Баланс карты: {MoneyAmount} р. ");
         }
     }
 
