@@ -1,5 +1,6 @@
 ﻿using ДЗ___11___2;
 
+
 static class Program
 {
     private static readonly Card TransportCard = new Card();
