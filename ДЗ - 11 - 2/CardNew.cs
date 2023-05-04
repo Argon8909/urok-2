@@ -1,6 +1,6 @@
-﻿namespace ДЗ___11___2;
+﻿namespace ДЗ_12;
 
-public class CardNew
+public partial class CardNew
 {
     public delegate void MoneyOperation(decimal moneyDelta, decimal moneyBalance);
 
@@ -30,15 +30,18 @@ public class CardNew
     /// </summary>
     public event NotEnoughMoney OnNotEnoughMoney;
 
-    public decimal CashbackMoneyBox { get; private set; }
+
     public List<string> PaymentsHistory { get; } = new();
 
-    private decimal _moneyAmount;
+    private decimal _moneyBalanse;
 
-    public decimal MoneyAmount
+    /// <summary>
+    /// Балланс
+    /// </summary>
+    public decimal MoneyBalanse
     {
-        get => _moneyAmount;
-        private set { _moneyAmount = value; }
+        get => _moneyBalanse;
+        private set { _moneyBalanse = value; }
     }
 
     /// <summary>
@@ -48,29 +51,37 @@ public class CardNew
     /// <param name="money">Сумма списания со счёта</param>
     public void Pay(Predicate<decimal> canPay, decimal money = 30)
     {
-        if (canPay(MoneyAmount))
+        if (canPay(MoneyBalanse))
         {
-            MoneyAmount -= money;
-            OnMoneyOperation?.Invoke(-money, MoneyAmount);
-            PaymentsHistory.Add($"- {money} р. Баланс карты: {MoneyAmount} р.");
+            MoneyBalanse -= money;
+            OnMoneyOperation?.Invoke(-money, MoneyBalanse);
+            PaymentsHistory.Add($"- {money} р. Баланс карты: {MoneyBalanse} р.");
             SetCashback(money);
         }
         else
         {
-            OnErrorOperations.Invoke(MoneyAmount);
+            OnErrorOperations.Invoke(MoneyBalanse);
         }
     }
+}
+
+/// <summary>
+/// тут реализованна логика пополнения
+/// </summary>
+public partial class CardNew
+{
+    public decimal CashbackMoneyBox { get; private set; }
 
     /// <summary>
     /// Метод пополнения счёта
     /// </summary>
     /// <param name="money"></param>
-    public void Replenishment(int money)
+    public void Replenishment(decimal money)
     {
         if (money > 0)
         {
-            MoneyAmount += money;
-            OnMoneyOperation.Invoke(money, MoneyAmount);
+            MoneyBalanse += money;
+            OnMoneyOperation.Invoke(money, MoneyBalanse);
         }
         else
         {
@@ -78,6 +89,10 @@ public class CardNew
         }
     }
 
+    /// <summary>
+    /// Метод пополнения кэшбэка.
+    /// </summary>
+    /// <param name="cashback"></param>
     private void SetCashback(decimal cashback)
     {
         decimal accrued = cashback / 10;

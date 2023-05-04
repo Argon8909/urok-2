@@ -1,15 +1,35 @@
-﻿using ДЗ___11___2;
+﻿//using ДЗ___11___2;
+
+using ДЗ_12;
+using EventHandler = ДЗ_12.EventHandler;
 
 
 static class Program
 {
-    private static readonly Card TransportCard = new Card();
-
+    private static readonly CardNew TransportCard = new();
+    
     public static void Main()
     {
-        TransportCard.OnPayMessage += ShowOperation;
+        TransportCard.OnMoneyOperation += EventHandler.OnMoneyOperationHandler;
+        TransportCard.OnCashbackChange += EventHandler.OnCashbackChangeHandler;
+        
         TransportCard.Replenishment(new Random().Next(1, 60));
-        TransportCard.Pay(x => x >= 30);
+        TransportCard.Pay(x => x >= 30, 30);
+        
+        
+        
+        TransportCard.OnMoneyOperation -= EventHandler.OnMoneyOperationHandler;
+        TransportCard.OnCashbackChange -= EventHandler.OnCashbackChangeHandler;
+        Console.ReadKey();
+        Main();
+    }
+}
+
+
+/*
+TransportCard.OnPayMessage += ShowOperation;
+        TransportCard.Replenishment(new Random().Next(1, 60));
+        TransportCard.Pay(x => x >= 30, 30);
         Console.WriteLine($"Кешбек: {TransportCard.GetCashback()} р.");
         Console.WriteLine("История платежей:");
 
@@ -26,11 +46,4 @@ static class Program
         Console.WriteLine("");
         Console.ReadKey();
         TransportCard.OnPayMessage -= ShowOperation;
-        Main();
-    }
-}
-
-
-/*
-
 */

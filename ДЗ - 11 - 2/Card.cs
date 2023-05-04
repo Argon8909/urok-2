@@ -30,7 +30,7 @@ public class Card
         }
     }
 
-    public void Pay(Predicate<int> canPay, int money = 30)
+    public void Pay(Predicate<int> canPay, int money )
     {
         if (canPay(MoneyAmount))
         {
