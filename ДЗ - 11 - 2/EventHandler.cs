@@ -29,7 +29,8 @@ public static class EventHandler
 
     public static void OnNotEnoughMoneyHandler(decimal writeOffValue, decimal moneyBalanse)
     {
-        Console.WriteLine($"Недостаточно средств на счету! Сумма списания {writeOffValue} рублей, сумма на балансе {moneyBalanse} рублей."); 
+        Console.WriteLine(
+            $"Недостаточно средств на счету! Сумма списания {writeOffValue} рублей, сумма на балансе {moneyBalanse} рублей.");
     }
 
     public static void OnErrorOperationsHandler(decimal invalidValue)
@@ -38,9 +39,9 @@ public static class EventHandler
         {
             Console.WriteLine($"Ошибка! была попытка пополнить счёт на 0 руб.");
         }
-        else if(invalidValue < 0)
+        else if (invalidValue < 0)
         {
-            Console.WriteLine($"Ошибка! Нельзя пополнить счёт отрицательным значением!");  
+            Console.WriteLine($"Ошибка! Нельзя пополнить счёт отрицательным значением!");
         }
     }
 }

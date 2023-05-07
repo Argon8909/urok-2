@@ -3,7 +3,7 @@
 
 public static class InputParse
 {
-    private static int ParseStringToInt(string inputValue)
+    private static int ParseStringToInt(this string inputValue)
     {
         int result;
         var parsed = int.TryParse(inputValue, out result);
