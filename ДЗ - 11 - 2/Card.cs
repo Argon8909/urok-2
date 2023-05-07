@@ -1,61 +1,80 @@
-﻿namespace ДЗ___11___2;
+﻿namespace ДЗ_12;
 
-public class Card
+public partial class Card
 {
-    public delegate void PayOperation(string message);
+    public delegate void MoneyOperation(decimal moneyDelta, decimal moneyBalance);
 
-    public PayOperation? OnPayMessage;
+    /// <summary>
+    /// Событие изменения счёта.
+    /// </summary>
+    public event MoneyOperation OnMoneyOperation;
 
-    private int _moneyAmount;
+    public delegate void CashbackChange(decimal CashbackDelta, decimal CashbackBalance);
 
-    public int MoneyAmount
+    /// <summary>
+    /// Событие изменения балланса кешбэка.
+    /// </summary>
+    public event CashbackChange OnCashbackChange;
+
+    public delegate void ErrorOperations(decimal invalidValue);
+
+    /// <summary>
+    /// Событие ошибки
+    /// </summary>
+    public event ErrorOperations OnErrorOperations;
+
+    public delegate void NotEnoughMoney(decimal writeOffValue, decimal moneyBalanse);
+
+    /// <summary>
+    /// Событие - недостаточно средств.
+    /// </summary>
+    public event NotEnoughMoney OnNotEnoughMoney;
+
+
+    public List<string> PaymentsHistory { get; } = new();
+
+    private decimal _moneyBalanse;
+
+    /// <summary>
+    /// Балланс
+    /// </summary>
+    public decimal MoneyBalanse
     {
-        get => _moneyAmount;
-        private set { _moneyAmount = value; }
+        get => _moneyBalanse;
+        private set { _moneyBalanse = value; }
     }
 
-    public int CashbackMoneyBox { get; private set; }
-    public List<string> PaymentsHistory { get; } = new ();
-
-    public void Replenishment(int money)
+    /// <summary>
+    /// метод оплаты со счёта
+    /// </summary>
+    /// <param name="canPay"></param>
+    /// <param name="money">Сумма списания со счёта</param>
+    public void Pay(Predicate<decimal> canPay, decimal money = 30)
     {
-        if (money > 0)
+        if (canPay(MoneyBalanse))
         {
-            MoneyAmount += money;
-            OnPayMessage?.Invoke($"Карта пополнена на {money} р. Баланс карты: {MoneyAmount} р.");
+            MoneyBalanse -= money;
+            OnMoneyOperation?.Invoke(-money, MoneyBalanse);
+            PaymentsHistory.Add($"Списано {money} р. Баланс карты: {MoneyBalanse} р.");
+            SetCashback(money);
         }
         else
         {
-            OnPayMessage?.Invoke($"Неверное значение!!! ");
+            PaymentsHistory.Add(
+                $"Недостаточно средств для списания! Необходимо минимум {money} руб. Баланс карты: {MoneyBalanse} р.");
+            OnNotEnoughMoney.Invoke(money, MoneyBalanse);
         }
     }
 
-    public void Pay(Predicate<int> canPay, int money )
+    public void PrintPaymentsHistory()
     {
-        if (canPay(MoneyAmount))
+        Console.WriteLine("История операций:");
+        foreach (var VAR in PaymentsHistory)
         {
-            MoneyAmount -= money;
-            OnPayMessage?.Invoke($"Списано {money} р. Баланс карты: {MoneyAmount} р.");
-            PaymentsHistory.Add($"- {money} р. Баланс карты: {MoneyAmount} р.");
-            SetCashback(money / 10);
+            Console.WriteLine(VAR);
         }
-        else
-        {
-            OnPayMessage?.Invoke($"Недостаточно средств на счету. Баланс карты: {MoneyAmount} р. ");
-        }
-    }
 
-    private void SetCashback(int cashback)
-    {
-        CashbackMoneyBox += cashback;
-    }
-
-    public int GetCashback() 
-    {
-        return CashbackMoneyBox; 
+        Console.WriteLine("\n");
     }
 }
 
-/*
-
-*/

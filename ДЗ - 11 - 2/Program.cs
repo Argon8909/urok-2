@@ -5,7 +5,7 @@ using EventHandler = ДЗ_12.EventHandler;
 
 static class Program
 {
-    private static readonly CardNew TransportCard = new();
+    private static readonly Card TransportCard = new();
 
     public static void Main()
     {
