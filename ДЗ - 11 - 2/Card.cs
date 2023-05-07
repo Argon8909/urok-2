@@ -69,12 +69,11 @@ public partial class Card
     public void PrintPaymentsHistory()
     {
         Console.WriteLine("История операций:");
-        foreach (var VAR in PaymentsHistory)
+        foreach (var history in PaymentsHistory)
         {
-            Console.WriteLine(VAR);
+            Console.WriteLine(history);
         }
 
         Console.WriteLine("\n");
     }
 }
-

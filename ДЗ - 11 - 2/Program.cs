@@ -11,6 +11,7 @@ static class Program
     {
         for (int i = 0; i < 5; i++)
         {
+            Console.WriteLine("-----------------------------");
             TransportCard.OnMoneyOperation += EventHandler.OnMoneyOperationHandler;
             TransportCard.OnCashbackChange += EventHandler.OnCashbackChangeHandler;
             TransportCard.OnNotEnoughMoney += EventHandler.OnNotEnoughMoneyHandler;
@@ -26,8 +27,6 @@ static class Program
             TransportCard.OnNotEnoughMoney -= EventHandler.OnNotEnoughMoneyHandler;
             TransportCard.OnErrorOperations -= EventHandler.OnErrorOperationsHandler;
         }
-
-        Console.ReadKey();
     }
 }
 
