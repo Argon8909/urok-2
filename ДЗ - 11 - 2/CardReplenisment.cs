@@ -5,6 +5,15 @@
 /// </summary>
 public partial class Card
 {
+    private decimal _cashbackSizePercent = 11;
+
+    public decimal CashbackSizePercent
+    {
+        get => _cashbackSizePercent;
+        set => _cashbackSizePercent = value;
+    }
+
+
     public decimal CashbackMoneyBox { get; private set; }
 
     /// <summary>
@@ -29,10 +38,10 @@ public partial class Card
     /// Метод пополнения кэшбэка.
     /// </summary>
     /// <param name="cashback"></param>
-    private void SetCashback(decimal cashback)
+    private void SetCashback(decimal sum)
     {
-        decimal accrued = cashback / 10;
-        CashbackMoneyBox += accrued;
-        OnCashbackChange.Invoke(accrued, CashbackMoneyBox);
+        decimal cashback = sum * (CashbackSizePercent / 100);
+        CashbackMoneyBox += cashback;
+        OnCashbackChange.Invoke(cashback, CashbackMoneyBox);
     }
 }
