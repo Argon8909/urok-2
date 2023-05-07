@@ -16,14 +16,14 @@ public partial class CardNew
     /// </summary>
     public event CashbackChange OnCashbackChange;
 
-    public delegate void ErrorOperations(decimal message);
+    public delegate void ErrorOperations(decimal invalidValue);
 
     /// <summary>
     /// Событие ошибки
     /// </summary>
     public event ErrorOperations OnErrorOperations;
 
-    public delegate void NotEnoughMoney(decimal message);
+    public delegate void NotEnoughMoney(decimal writeOffValue, decimal moneyBalanse);
 
     /// <summary>
     /// Событие - недостаточно средств.
@@ -55,13 +55,26 @@ public partial class CardNew
         {
             MoneyBalanse -= money;
             OnMoneyOperation?.Invoke(-money, MoneyBalanse);
-            PaymentsHistory.Add($"- {money} р. Баланс карты: {MoneyBalanse} р.");
+            PaymentsHistory.Add($"Списано {money} р. Баланс карты: {MoneyBalanse} р.");
             SetCashback(money);
         }
         else
         {
-            OnErrorOperations.Invoke(MoneyBalanse);
+            PaymentsHistory.Add(
+                $"Недостаточно средств для списания! Необходимо минимум {money} руб. Баланс карты: {MoneyBalanse} р.");
+            OnNotEnoughMoney.Invoke(money, MoneyBalanse);
         }
+    }
+
+    public void PrintPaymentsHistory()
+    {
+        Console.WriteLine("История операций:");
+        foreach (var VAR in PaymentsHistory)
+        {
+            Console.WriteLine(VAR);
+        }
+
+        Console.WriteLine("\n");
     }
 }
 
@@ -85,7 +98,7 @@ public partial class CardNew
         }
         else
         {
-            //MoneyOperationsMessage?.Invoke($"Была попытка пополнения на {money} рублей!!! ");
+            OnErrorOperations.Invoke(money);
         }
     }
 
