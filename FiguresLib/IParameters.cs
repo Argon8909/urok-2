@@ -2,6 +2,6 @@
 
 public interface IParameters
 {
-    public double Area { get; }                 
-    public  double Perimeter { get; }
+    public double Area { get; }
+    public double Perimeter { get; }
 }

@@ -1,12 +1,13 @@
 ﻿using System;
+
 namespace FiguresLib
 {
-    public class Figure: IParameters , IDescriptor
+    public class Figure : IParameters, IDescriptor
     {
         public virtual double Area { get; }
-        
+
         public virtual double Perimeter { get; }
-        
+
         public int FigureId { get; }
         public string Title => FigureType.ToString();
 
@@ -15,34 +16,21 @@ namespace FiguresLib
             FigureId = figureId;
         }
 
+        [Custom]
         public string GetTitle()
         {
             return $"{FigureId}:{Title}";
         }
-        
+
         public virtual FigureType FigureType { get; }
-        
-        
-        
-        
     }
 
     public enum FigureType
     {
-        Circle, 
-        Triangle, 
+        Circle,
+        Triangle,
         Square
     }
-
-    
-
-   
-    
-
-    
-    
-    
-    
 }
 
 /*
