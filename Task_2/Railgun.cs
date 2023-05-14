@@ -14,8 +14,9 @@ public class RailGun
         Print.PrintInfo("Heating", bullet.Heating);
         Print.PrintInfo("_heat", _heat);
         
-        if (_heat > 100)
+        if (_heat >= 100)
         {
+            _heat = 0;
             throw new OverheatException("----------------Railgun overheated!-----------------");
         }
 

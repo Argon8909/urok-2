@@ -6,13 +6,13 @@ namespace HomeworkGenerics
     {
         static void Main()
         {
-            RailGun RailGun = new RailGun();
-            TestRifle<Plasma>(RailGun);
-            TestRifle<Neon>(RailGun);
-            TestRifle<Pin>(RailGun);
+            RailGun railGun = new RailGun();
+            TestRifle<Plasma>(railGun);
+            TestRifle<Neon>(railGun);
+            TestRifle<Pin>(railGun);
         }
 
-        public static void TestRifle<T>(RailGun railgun) where T : RailGunBullet, new()
+        public static void TestRifle<T>(RailGun railGun) where T : RailGunBullet, new()
         {
             int shotCount = 0;
             int totalDamage = 0;
@@ -20,7 +20,7 @@ namespace HomeworkGenerics
             {
                 while (true)
                 {
-                    int damage = railgun.Shot<T>();
+                    int damage = railGun.Shot<T>();
                     shotCount++;
                     totalDamage += damage;
                     Print.PrintInfo("totalDamage", totalDamage);
