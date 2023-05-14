@@ -7,15 +7,18 @@ public class RailGun
     public int Shot<T>() where T : RailGunBullet, new()
     {
         T bullet = new T();
-        Console.WriteLine($"bullet тип: {typeof(T)}");
         int damage = bullet.Damage;
         _heat += bullet.Heating;
+        
+        Console.WriteLine($"bullet тип: {typeof(T)}");
         Print.PrintInfo("Heating", bullet.Heating);
         Print.PrintInfo("_heat", _heat);
+        
         if (_heat > 100)
         {
-            throw new OverheatException("Railgun overheated!");
+            throw new OverheatException("----------------Railgun overheated!-----------------");
         }
+
         return damage;
     }
 }

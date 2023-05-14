@@ -4,7 +4,7 @@ public class Neon : RailGunBullet
 {
     public Neon()
     {
-        Heating = 3;
+        Heating = 1;
         Damage = 20;
     }
 }

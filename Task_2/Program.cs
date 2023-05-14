@@ -23,6 +23,7 @@ namespace HomeworkGenerics
                     int damage = railgun.Shot<T>();
                     shotCount++;
                     totalDamage += damage;
+                    Print.PrintInfo("totalDamage", totalDamage);
                 }
             }
             catch (OverheatException e)
