@@ -1,8 +1,6 @@
 ﻿namespace FiguresLib;
 
-using System;
-
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Method)] // | AttributeTargets.Method)
 public class CustomAttribute : Attribute
 {
     public CustomAttribute()

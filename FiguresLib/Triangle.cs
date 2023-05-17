@@ -2,7 +2,7 @@
 
 namespace FiguresLib;
 
-[Custom]
+[Angle(angle: 3)]
 public class Triangle : Figure
 {
     private double _a, _b, _c;
