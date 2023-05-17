@@ -5,7 +5,6 @@
 /// </summary>
 public static class InputParse
 {
-    
     private static int ParseStringToInt(this string? inputValue)
     {
         int result;

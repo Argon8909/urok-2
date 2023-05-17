@@ -1,15 +1,57 @@
 ﻿//using ДЗ___11___2;
 
+using System.Collections;
+using System.Net.Sockets;
 using ДЗ_12;
 using EventHandler = ДЗ_12.EventHandler;
 
 static class Program
 {
-    private static readonly Card TransportCard = new();
+    // private static readonly Card TransportCard = new();
 
+    static Queue<Card> _queueCard = new();
+    static List<Card> _listCards = new ();
     public static void Main()
     {
-        for (int i = 0; i < 5; i++)
+        SubscriptionEvent();
+
+        UnsubscribeEvent();
+    }
+
+    static List<Card> ListInit( List<Card> card, int quantity)
+    {
+        for (int i = 0; i < quantity; i++)
+        {
+            card.Add(new Card());
+        }
+    }
+    static void QueueInit(Queue queue, int quantity)
+    {
+        for (int i = 0; i < quantity; i++)
+        {
+            // queue.Enqueue (Card TransportCard );
+        }
+    }
+    static void SubscriptionEvent()
+    {
+        TransportCard.OnMoneyOperation += EventHandler.OnMoneyOperationHandler;
+        TransportCard.OnCashbackChange += EventHandler.OnCashbackChangeHandler;
+        TransportCard.OnNotEnoughMoney += EventHandler.OnNotEnoughMoneyHandler;
+        TransportCard.OnErrorOperations += EventHandler.OnErrorOperationsHandler;
+    }
+
+    static void UnsubscribeEvent()
+    {
+        TransportCard.OnMoneyOperation -= EventHandler.OnMoneyOperationHandler;
+        TransportCard.OnCashbackChange -= EventHandler.OnCashbackChangeHandler;
+        TransportCard.OnNotEnoughMoney -= EventHandler.OnNotEnoughMoneyHandler;
+        TransportCard.OnErrorOperations -= EventHandler.OnErrorOperationsHandler;
+    }
+}
+
+
+/*
+ for (int i = 0; i < 5; i++)
         {
             Console.WriteLine("-----------------------------");
             TransportCard.OnMoneyOperation += EventHandler.OnMoneyOperationHandler;
@@ -27,10 +69,4 @@ static class Program
             TransportCard.OnNotEnoughMoney -= EventHandler.OnNotEnoughMoneyHandler;
             TransportCard.OnErrorOperations -= EventHandler.OnErrorOperationsHandler;
         }
-    }
-}
-
-
-/*
-
 */
