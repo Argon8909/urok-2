@@ -33,6 +33,7 @@ static class Program
             if (!card.Pay(transport.Fare))
             {
                 Console.WriteLine("Дальше пешком!");
+                _routeToTheOffice.Clear();
                 return;
             }
 
