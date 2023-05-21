@@ -33,15 +33,15 @@ public partial class Card
 
     public List<string> PaymentsHistory { get; } = new();
 
-    private decimal _moneyBalanse;
+    private decimal _moneyBalance;
 
     /// <summary>
     /// Балланс
     /// </summary>
-    public decimal MoneyBalanse
+    public decimal MoneyBalance
     {
-        get => _moneyBalanse;
-        private set { _moneyBalanse = value; }
+        get => _moneyBalance;
+        private set { _moneyBalance = value; }
     }
 
     /// <summary>
@@ -51,18 +51,18 @@ public partial class Card
     /// <param name="money">Сумма списания со счёта</param>
     public void Pay(Predicate<decimal> canPay, decimal money = 30)
     {
-        if (canPay(MoneyBalanse))
+        if (canPay(MoneyBalance))
         {
-            MoneyBalanse -= money;
-            OnMoneyOperation?.Invoke(-money, MoneyBalanse);
-            PaymentsHistory.Add($"Списано {money} р. Баланс карты: {MoneyBalanse} р.");
+            MoneyBalance -= money;
+            OnMoneyOperation?.Invoke(-money, MoneyBalance);
+            PaymentsHistory.Add($"Списано {money} р. Баланс карты: {MoneyBalance} р.");
             SetCashback(money);
         }
         else
         {
             PaymentsHistory.Add(
-                $"Недостаточно средств для списания! Необходимо минимум {money} руб. Баланс карты: {MoneyBalanse} р.");
-            OnNotEnoughMoney.Invoke(money, MoneyBalanse);
+                $"Недостаточно средств для списания! Необходимо минимум {money} руб. Баланс карты: {MoneyBalance} р.");
+            OnNotEnoughMoney.Invoke(money, MoneyBalance);
         }
     }
 

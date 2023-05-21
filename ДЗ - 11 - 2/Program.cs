@@ -10,21 +10,23 @@ static class Program
     // private static readonly Card TransportCard = new();
 
     static Queue<Card> _queueCard = new();
-    static List<Card> _listCards = new ();
-    public static void Main()
-    {
-        SubscriptionEvent();
+    static List<Card> _listCards = new();
 
-        UnsubscribeEvent();
+    public static void Main()
+    { 
+        //SubscriptionEvent();
+
+       //UnsubscribeEvent();
     }
 
-    static List<Card> ListInit( List<Card> card, int quantity)
+    static List<Card> ListInit(List<Card> card, int quantity)
     {
         for (int i = 0; i < quantity; i++)
         {
             card.Add(new Card());
         }
     }
+
     static void QueueInit(Queue queue, int quantity)
     {
         for (int i = 0; i < quantity; i++)
@@ -32,20 +34,21 @@ static class Program
             // queue.Enqueue (Card TransportCard );
         }
     }
-    static void SubscriptionEvent()
+
+    static void SubscriptionEvent(Card card)
     {
-        TransportCard.OnMoneyOperation += EventHandler.OnMoneyOperationHandler;
-        TransportCard.OnCashbackChange += EventHandler.OnCashbackChangeHandler;
-        TransportCard.OnNotEnoughMoney += EventHandler.OnNotEnoughMoneyHandler;
-        TransportCard.OnErrorOperations += EventHandler.OnErrorOperationsHandler;
+        card.OnMoneyOperation += EventHandler.OnMoneyOperationHandler;
+        card.OnCashbackChange += EventHandler.OnCashbackChangeHandler;
+        card.OnNotEnoughMoney += EventHandler.OnNotEnoughMoneyHandler;
+        card.OnErrorOperations += EventHandler.OnErrorOperationsHandler;
     }
 
-    static void UnsubscribeEvent()
+    static void UnsubscribeEvent(Card card)
     {
-        TransportCard.OnMoneyOperation -= EventHandler.OnMoneyOperationHandler;
-        TransportCard.OnCashbackChange -= EventHandler.OnCashbackChangeHandler;
-        TransportCard.OnNotEnoughMoney -= EventHandler.OnNotEnoughMoneyHandler;
-        TransportCard.OnErrorOperations -= EventHandler.OnErrorOperationsHandler;
+        card.OnMoneyOperation -= EventHandler.OnMoneyOperationHandler;
+        card.OnCashbackChange -= EventHandler.OnCashbackChangeHandler;
+        card.OnNotEnoughMoney -= EventHandler.OnNotEnoughMoneyHandler;
+        card.OnErrorOperations -= EventHandler.OnErrorOperationsHandler;
     }
 }
 

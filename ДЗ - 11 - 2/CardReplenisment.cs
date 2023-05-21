@@ -24,9 +24,9 @@ public partial class Card
     {
         if (money > 0)
         {
-            MoneyBalanse += money;
-            PaymentsHistory.Add($"Пополнено на {money} р. Баланс карты: {MoneyBalanse} р.");
-            OnMoneyOperation.Invoke(money, MoneyBalanse);
+            MoneyBalance += money;
+            PaymentsHistory.Add($"Пополнено на {money} р. Баланс карты: {MoneyBalance} р.");
+            OnMoneyOperation.Invoke(money, MoneyBalance);
         }
         else
         {

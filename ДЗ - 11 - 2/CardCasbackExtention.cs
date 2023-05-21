@@ -6,6 +6,5 @@ public static class CardCasbackExtention
     {
         card.CashbackSizePercent = newSizeCashback;
         Console.WriteLine("Был изменён размер кэшбэка на " + newSizeCashback);
-        
     }
 }
