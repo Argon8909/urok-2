@@ -49,20 +49,22 @@ public partial class Card
     /// </summary>
     /// <param name="canPay"></param>
     /// <param name="money">Сумма списания со счёта</param>
-    public void Pay(Predicate<decimal> canPay, decimal money = 30)
+    public bool Pay(decimal money) //Predicate<decimal> canPay
     {
-        if (canPay(MoneyBalance))
+        if (MoneyBalance >= money)
         {
             MoneyBalance -= money;
             OnMoneyOperation?.Invoke(-money, MoneyBalance);
             PaymentsHistory.Add($"Списано {money} р. Баланс карты: {MoneyBalance} р.");
             SetCashback(money);
+            return true;
         }
         else
         {
             PaymentsHistory.Add(
                 $"Недостаточно средств для списания! Необходимо минимум {money} руб. Баланс карты: {MoneyBalance} р.");
             OnNotEnoughMoney.Invoke(money, MoneyBalance);
+            return false;
         }
     }
 

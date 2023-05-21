@@ -2,36 +2,52 @@
 
 using System.Collections;
 using System.Net.Sockets;
+using ДЗ___11___2;
 using ДЗ_12;
 using EventHandler = ДЗ_12.EventHandler;
 
 static class Program
 {
-    // private static readonly Card TransportCard = new();
-
-    static Queue<Card> _queueCard = new();
+    static readonly Card TransportCard = new();
+    static Queue<PublicTransport> _routeToTheOffice = new();
+    static Stack<PublicTransport> _routeHome = new();
     static List<Card> _listCards = new();
+    static Queue<Card> _queueCard = new();
 
     public static void Main()
-    { 
-        //SubscriptionEvent();
+    {
+        SubscriptionEvent(TransportCard);
+        _routeToTheOffice = CreatingRoute(_routeToTheOffice);
+        TransportCard.Replenishment(new Random().Next(1, 300));
+        Trip(TransportCard);
 
-       //UnsubscribeEvent();
+        UnsubscribeEvent(TransportCard);
     }
 
-    static List<Card> ListInit(List<Card> card, int quantity)
+    static void Trip(Card card)
     {
-        for (int i = 0; i < quantity; i++)
+        Console.WriteLine("Поездка из дома.");
+        while (_routeToTheOffice.Count > 0)
         {
-            card.Add(new Card());
+            var transport = _routeToTheOffice.Dequeue();
+            if (!card.Pay(transport.Fare))
+            {
+                Console.WriteLine("Дальше пешком!");
+                return;
+            }
+
+            _routeHome.Push(transport);
         }
-    }
 
-    static void QueueInit(Queue queue, int quantity)
-    {
-        for (int i = 0; i < quantity; i++)
+        Console.WriteLine("Поездка домой.");
+        while (_routeHome.Count > 0)
         {
-            // queue.Enqueue (Card TransportCard );
+            if (!card.Pay(_routeHome.Pop().Fare))
+            {
+                _routeHome.Clear();
+                Console.WriteLine("Дальше пешком!");
+                return;
+            }
         }
     }
 
@@ -50,10 +66,68 @@ static class Program
         card.OnNotEnoughMoney -= EventHandler.OnNotEnoughMoneyHandler;
         card.OnErrorOperations -= EventHandler.OnErrorOperationsHandler;
     }
+
+    static Queue<PublicTransport> CreatingRoute(Queue<PublicTransport> queue)
+    {
+        Random random = new Random();
+        int count = random.Next(5, 11); // Генерация случайного числа от 5 до 10
+        Console.WriteLine($"Составлен маршрут: ");
+        for (int i = 0; i < count; i++)
+        {
+            int randomNumber = random.Next(1, 6);
+            PublicTransport transport = null;
+
+            switch (randomNumber)
+            {
+                case 1:
+                    transport = new Bus();
+                    break;
+                case 2:
+                    transport = new Metro();
+                    break;
+                case 3:
+                    transport = new Minibus();
+                    break;
+                case 4:
+                    transport = new Tram();
+                    break;
+                case 5:
+                    transport = new Trolleybus();
+                    break;
+                default:
+                    break;
+            }
+
+            if (transport != null)
+            {
+                queue.Enqueue(transport);
+                Console.WriteLine($"Транспортное средство: {transport.GetType().Name}, № - {transport.ID}");
+            }
+        }
+
+        Console.WriteLine("");
+        return queue;
+    }
 }
 
 
 /*
+ static void QueueInit(Queue queue, int quantity)
+    {
+        for (int i = 0; i < quantity; i++)
+        {
+            // queue.Enqueue (Card TransportCard );
+        }
+    }
+ 
+   static List<Card> ListInit(List<Card> card, int quantity)
+    {
+        for (int i = 0; i < quantity; i++)
+        {
+            card.Add(new Card());
+        }
+    }
+ 
  for (int i = 0; i < 5; i++)
         {
             Console.WriteLine("-----------------------------");
