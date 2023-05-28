@@ -3,9 +3,9 @@
 
 Task_1();
 
-Task_2();
+//Task_2();
 
-Task_3();
+//Task_3();
 
 
 /*
@@ -20,24 +20,43 @@ void Task_1()
     int K = 7;
     var A = new List<int>()
     {
-        2, 3, 4, 6, 7, 9, 6, 9, 4, 8, 6, 10, 3, 13, 4, 55, 4, 86, 4, 14, 6, 3, 13, 4, 6, 2, 3, 8, 6, 7, 9, 6, 3, 12, 5,
+        200, 3, 44, 86, 7, 9, 6, 9, 4, 8, 6, 10, 3, 13, 4, 55, 4, 86, 4, 14, 6, 3, 13, 44, 6, 2, 3, 8, 6, 7, 9, 6, 3, 12,
+        5,
         6
     };
-    Console.WriteLine(@$"
-==========изначальное================= K == {K}");
+    Console.WriteLine($"==========изначальное================= K == {K}");
     foreach (var number in A)
     {
         Console.Write(number + ", ");
     }
 
-    var A1 = A
-        .Where(x => x % 2 == 0)
-        .Except(A
-            .Where(x => x > K))
-        .Reverse();
+    Console.ForegroundColor = ConsoleColor.Green;
+    var A11 = A
+        .Where(x => x % 2 == 0);
+    
+    Console.WriteLine("===Чётные====");
+    foreach (var VARIABLE in A11)
+    {
+        Console.Write($"{VARIABLE} ");
+    }
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    var A22 = A.Where((x, i) => { return i > K; });
+    
+    Console.WriteLine("===Больше К===");
 
-    Console.WriteLine(@"
-=============Итог=====================");
+    foreach (var VARIABLE in A22)
+    {
+        Console.Write($"{VARIABLE} ");
+    }
+
+
+    var A1 = A11.Except(A22)
+        .Distinct()
+        .Reverse()
+        .ToList();
+
+
+    Console.WriteLine("\n=============Итог=====================");
 
     foreach (var number in A1)
     {
@@ -128,10 +147,15 @@ void Task_3()
         .GroupBy(x => x.SchoolNum)
         .Select(x => x
             .OrderBy(o => o.Year))
-        .Select(x => new School() {SchoolNum = x
-                .First().SchoolNum, Quantity = x
-                .Count(), LastName = x
-                .First().LastName});
+        .Select(x => new School()
+        {
+            SchoolNum = x
+                .First().SchoolNum,
+            Quantity = x
+                .Count(),
+            LastName = x
+                .First().LastName
+        });
 
 
     Console.WriteLine("Список абитуриентов");
