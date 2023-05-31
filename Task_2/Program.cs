@@ -11,29 +11,41 @@ namespace Products
     {
         private const int BasketCapacity = 10;
         private const int ProductsCapacity = 100;
-
         private static Random _random = new Random();
         private static List<Product> _products = new List<Product>(ProductsCapacity); //перечень продуктов
         private static List<ProductBasket> Baskets = new List<ProductBasket>(); //список корзин
+        private static List<AutoResetEvent> flags = new List<AutoResetEvent>();
 
         static void Main(string[] args)
         {
             Creator();
 
-            var threads = new List<Thread>(BasketCapacity);
+            var threads = new List<Thread>();
 
+            for (int i = 0; i < Baskets.Count; i++)
+            {
+                var _basket = Baskets[i];
+                var i1 = i;
+                Thread th = new Thread(() =>
+                    Console.WriteLine($"Сумма продуктов в корзине {i1}: " + SumProducts(_basket, i1)));
+                threads.Add(th);
+                Console.WriteLine($"Создан поток {i}");
+            }
+            
             for (int i = 0; i < threads.Count; i++)
             {
-                Thread th = new Thread(() => Console.WriteLine(SumProducts(Baskets[i])));
-                th.Start();
+                threads[i].Start();
             }
-             
-           
+
+            Console.WriteLine("Конец программы.");
         }
 
-        static decimal SumProducts(ProductBasket basket)
+        static decimal SumProducts(ProductBasket basket, int index)
         {
-            return basket.Products.Sum(x => x.Key.Price * x.Value);
+            Console.WriteLine($"Подсчёт суммы продуктов для корзины  {index} старт");
+            var result = basket.Products.Sum(x => x.Key.Price * x.Value);
+            Thread.Sleep(_random.Next(1, 3000));
+            return result;
         }
 
         static void Creator()
@@ -42,7 +54,6 @@ namespace Products
             {
                 _products.Add(CreateProduct());
             }
-
 
             for (int i = 0; i < BasketCapacity; i++)
             {
