@@ -2,6 +2,13 @@
 
 public partial class Card
 {
+    public delegate void HistoryOperation(decimal moneyDelta, decimal moneyBalance, bool errorOperation = false);
+
+    /// <summary>
+    /// Событие истории операций.
+    /// </summary>
+    public event HistoryOperation OnHistoryOperation;
+
     public delegate void MoneyOperation(decimal moneyDelta, decimal moneyBalance);
 
     /// <summary>
@@ -31,6 +38,7 @@ public partial class Card
     public event NotEnoughMoney OnNotEnoughMoney;
 
 
+    //public List<decimal> History { get; set; }
     public List<string> PaymentsHistory { get; } = new();
 
     private decimal _moneyBalance;
@@ -55,14 +63,15 @@ public partial class Card
         {
             MoneyBalance -= money;
             OnMoneyOperation?.Invoke(-money, MoneyBalance);
-            PaymentsHistory.Add($"Списано {money} р. Баланс карты: {MoneyBalance} р.");
+            //PaymentsHistory.Add($"Списано {money} р. Баланс карты: {MoneyBalance} р.");
+            OnHistoryOperation?.Invoke(-money, MoneyBalance);
             SetCashback(money);
             return true;
         }
         else
         {
-            PaymentsHistory.Add(
-                $"Недостаточно средств для списания! Необходимо минимум {money} руб. Баланс карты: {MoneyBalance} р.");
+            // PaymentsHistory.Add($"Недостаточно средств для списания! Необходимо минимум {money} руб. Баланс карты: {MoneyBalance} р.");
+            OnHistoryOperation?.Invoke(-money, MoneyBalance, true);
             OnNotEnoughMoney.Invoke(money, MoneyBalance);
             return false;
         }

@@ -4,6 +4,7 @@ using ДЗ___11___2;
 using ДЗ_12;
 using EventHandler = ДЗ_12.EventHandler;
 
+namespace HV_Lock;
 static class Program
 {
     static readonly Card TransportCard = new();
@@ -11,16 +12,15 @@ static class Program
     static Stack<PublicTransport> _routeHome = new();
     static List<Card> _listCards = new();
     static Queue<Card> _queueCard = new();
+    public static List<Dictionary<string, decimal>> _historyDictionary = new();
 
     private static List<Thread> _threadsOperration = new List<Thread>();
-    
+
 
     public static void Main()
     {
-      
-        
         SubscriptionEvent(TransportCard);
-        
+
         _routeToTheOffice = CreatingRoute(_routeToTheOffice);
         TransportCard.Replenishment(new Random().Next(1, 300));
         Trip(TransportCard);
@@ -58,6 +58,7 @@ static class Program
 
     static void SubscriptionEvent(Card card)
     {
+        card.OnHistoryOperation += EventHandler.OnOnHistoryOperationHandler;
         card.OnMoneyOperation += EventHandler.OnMoneyOperationHandler;
         card.OnCashbackChange += EventHandler.OnCashbackChangeHandler;
         card.OnNotEnoughMoney += EventHandler.OnNotEnoughMoneyHandler;
@@ -66,6 +67,7 @@ static class Program
 
     static void UnsubscribeEvent(Card card)
     {
+        card.OnHistoryOperation -= EventHandler.OnOnHistoryOperationHandler;
         card.OnMoneyOperation -= EventHandler.OnMoneyOperationHandler;
         card.OnCashbackChange -= EventHandler.OnCashbackChangeHandler;
         card.OnNotEnoughMoney -= EventHandler.OnNotEnoughMoneyHandler;

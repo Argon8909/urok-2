@@ -1,4 +1,6 @@
-﻿namespace ДЗ_12;
+﻿using HV_Lock;
+
+namespace ДЗ_12;
 
 public static class EventHandler
 {
@@ -42,6 +44,67 @@ public static class EventHandler
         else if (invalidValue < 0)
         {
             Console.WriteLine($"Ошибка! Нельзя пополнить счёт отрицательным значением!");
+        }
+    }
+
+    public static void OnOnHistoryOperationHandler1(decimal moneyDelta, decimal moneyBalance, bool errorOperation)
+    {
+        Dictionary<string, decimal> history = new();
+
+        if (!errorOperation)
+        {
+            if (moneyDelta < 0)
+            {
+                history.Add($"Списано: {+moneyDelta} руб. Остаток: {moneyBalance}  руб.", moneyBalance);
+                Program._historyDictionary.Add(history);
+            }
+            else if (moneyDelta > 0)
+            {
+                history.Add($"Зачислено: {moneyDelta} руб. Остаток: {moneyBalance}  руб.", moneyBalance);
+                Program._historyDictionary.Add(history);
+            }
+        }
+        else
+        {
+            history.Add(
+                $"Недостаточно средств для списания! Необходимо минимум {+moneyDelta} руб. Баланс карты: {moneyBalance} р.",
+                moneyBalance);
+            Program._historyDictionary.Add(history);
+        }
+    }
+
+    public static void OnOnHistoryOperationHandler(decimal moneyDelta, decimal moneyBalance, bool errorOperation)
+    {
+        Dictionary<string, decimal> history = new();
+
+        if (!errorOperation)
+        {
+            if (moneyDelta < 0)
+            {
+                history.Add($"Списано: {+moneyDelta} руб. Остаток: {moneyBalance}  руб.", moneyBalance);
+                lock (Program._historyDictionary)
+                {
+                    Program._historyDictionary.Add(history);
+                }
+            }
+            else if (moneyDelta > 0)
+            {
+                history.Add($"Зачислено: {moneyDelta} руб. Остаток: {moneyBalance}  руб.", moneyBalance);
+                lock (Program._historyDictionary)
+                {
+                    Program._historyDictionary.Add(history);
+                }
+            }
+        }
+        else
+        {
+            history.Add(
+                $"Недостаточно средств для списания! Необходимо минимум {+moneyDelta} руб. Баланс карты: {moneyBalance} р.",
+                moneyBalance);
+            lock (Program._historyDictionary)
+            {
+                Program._historyDictionary.Add(history);
+            }
         }
     }
 }
