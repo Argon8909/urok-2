@@ -1,6 +1,4 @@
-﻿
-
-using System.Collections;
+﻿using System.Collections;
 using System.Net.Sockets;
 using ДЗ___11___2;
 using ДЗ_12;
@@ -14,9 +12,15 @@ static class Program
     static List<Card> _listCards = new();
     static Queue<Card> _queueCard = new();
 
+    private static List<Thread> _threadsOperration = new List<Thread>();
+    
+
     public static void Main()
     {
+      
+        
         SubscriptionEvent(TransportCard);
+        
         _routeToTheOffice = CreatingRoute(_routeToTheOffice);
         TransportCard.Replenishment(new Random().Next(1, 300));
         Trip(TransportCard);
@@ -113,6 +117,19 @@ static class Program
 
 
 /*
+ 
+   // Создание экземпляров потоков с нужными именами
+        Thread read_1 = new Thread(ReadOperation);
+        Thread read_2 = new Thread(ReadOperation);
+        Thread write_1 = new Thread(WriteOperation);
+        Thread write_2 = new Thread(WriteOperation);
+
+// Добавление потоков в коллекцию
+        _threadsOperration.Add(read_1);
+        _threadsOperration.Add(read_2);
+        _threadsOperration.Add(write_1);
+        _threadsOperration.Add(write_2);
+ 
  static void QueueInit(Queue queue, int quantity)
     {
         for (int i = 0; i < quantity; i++)
