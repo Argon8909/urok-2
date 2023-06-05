@@ -73,7 +73,7 @@ public static class EventHandler
         }
     }
 
-    public static void OnOnHistoryOperationHandler(decimal moneyDelta, decimal moneyBalance, bool errorOperation)
+    public static void OnOnHistoryOperationHandler2(decimal moneyDelta, decimal moneyBalance, bool errorOperation)
     {
         Dictionary<string, decimal> history = new();
 
@@ -104,6 +104,85 @@ public static class EventHandler
             lock (Program._historyDictionary)
             {
                 Program._historyDictionary.Add(history);
+            }
+        }
+    }
+
+    private static object historyLock = new object();
+
+    public static void OnOnHistoryOperationHandler(decimal moneyDelta, decimal moneyBalance, bool errorOperation)
+    {
+        Dictionary<string, decimal> history = new();
+
+        if (!errorOperation)
+        {
+            if (moneyDelta < 0)
+            {
+                history.Add($"Списано: {+moneyDelta} руб. Остаток: {moneyBalance}  руб.", moneyBalance);
+                bool lockAcquired = false;
+                try
+                {
+                    if (Monitor.TryEnter(historyLock, TimeSpan.FromSeconds(5)))
+                    {
+                        lockAcquired = true;
+                        Program._historyDictionary.Add(history);
+                    }
+                    else
+                    {
+                        // Обработка неудачного получения блокировки
+                    }
+                }
+                finally
+                {
+                    if (lockAcquired)
+                        Monitor.Exit(historyLock);
+                }
+            }
+            else if (moneyDelta > 0)
+            {
+                history.Add($"Зачислено: {moneyDelta} руб. Остаток: {moneyBalance}  руб.", moneyBalance);
+                bool lockAcquired = false;
+                try
+                {
+                    if (Monitor.TryEnter(historyLock, TimeSpan.FromSeconds(5)))
+                    {
+                        lockAcquired = true;
+                        Program._historyDictionary.Add(history);
+                    }
+                    else
+                    {
+                        // Обработка неудачного получения блокировки
+                    }
+                }
+                finally
+                {
+                    if (lockAcquired)
+                        Monitor.Exit(historyLock);
+                }
+            }
+        }
+        else
+        {
+            history.Add(
+                $"Недостаточно средств для списания! Необходимо минимум {+moneyDelta} руб. Баланс карты: {moneyBalance} р.",
+                moneyBalance);
+            bool lockAcquired = false;
+            try
+            {
+                if (Monitor.TryEnter(historyLock, TimeSpan.FromSeconds(5)))
+                {
+                    lockAcquired = true;
+                    Program._historyDictionary.Add(history);
+                }
+                else
+                {
+                    // Обработка неудачного получения блокировки
+                }
+            }
+            finally
+            {
+                if (lockAcquired)
+                    Monitor.Exit(historyLock);
             }
         }
     }

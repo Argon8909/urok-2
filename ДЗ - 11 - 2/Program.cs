@@ -10,11 +10,7 @@ static class Program
     static readonly Card TransportCard = new();
     static Queue<PublicTransport> _routeToTheOffice = new();
     static Stack<PublicTransport> _routeHome = new();
-    static List<Card> _listCards = new();
-    static Queue<Card> _queueCard = new();
     public static List<Dictionary<string, decimal>> _historyDictionary = new();
-
-    //private static List<Thread> _threadsOperration = new List<Thread>();
 
 
     public static void Main()

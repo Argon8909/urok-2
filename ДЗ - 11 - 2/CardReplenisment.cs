@@ -27,6 +27,7 @@ public partial class Card
             MoneyBalance += money;
             PaymentsHistory.Add($"Пополнено на {money} р. Баланс карты: {MoneyBalance} р.");
             OnMoneyOperation.Invoke(money, MoneyBalance);
+            OnHistoryOperation?.Invoke(-money, MoneyBalance);
         }
         else
         {
