@@ -1,6 +1,6 @@
 ﻿using HV_Lock;
 
-namespace ДЗ_12;
+namespace HV_Lock;
 
 public static class EventHandler
 {

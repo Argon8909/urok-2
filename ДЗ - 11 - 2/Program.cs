@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Net.Sockets;
-using ДЗ___11___2;
-using ДЗ_12;
-using EventHandler = ДЗ_12.EventHandler;
+using HV_Lock;
+using EventHandler = HV_Lock.EventHandler;
 
 namespace HV_Lock;
+
 static class Program
 {
     static readonly Card TransportCard = new();
@@ -14,29 +14,53 @@ static class Program
     static Queue<Card> _queueCard = new();
     public static List<Dictionary<string, decimal>> _historyDictionary = new();
 
-    private static List<Thread> _threadsOperration = new List<Thread>();
+    //private static List<Thread> _threadsOperration = new List<Thread>();
 
 
     public static void Main()
     {
+        // Создание экземпляров потоков с нужными именами
+        Thread read_1 = new Thread(() => PrintHistory("поток 1"));
+        Thread read_2 = new Thread(() => PrintHistory("поток 2"));
+        Thread write_1 = new Thread(() => Trip("поток 1"));
+        Thread write_2 = new Thread(() => Trip("поток 2"));
+
+
         SubscriptionEvent(TransportCard);
 
-        _routeToTheOffice = CreatingRoute(_routeToTheOffice);
-        TransportCard.Replenishment(new Random().Next(1, 300));
-        Trip(TransportCard);
+        write_1.Start();
+        write_2.Start();
+        Thread.Sleep(3000);
+        read_1.Start();
+        read_2.Start();
 
         UnsubscribeEvent(TransportCard);
     }
 
-    static void Trip(Card card)
+    static void Trip(string item)
     {
-        Console.WriteLine("Поездка из дома.");
+        _routeToTheOffice = CreatingRoute(_routeToTheOffice, item);
+        TransportCard.Replenishment(new Random().Next(1, 300));
+        Trip(TransportCard, item);
+    }
+
+    static void PrintHistory(string item)
+    {
+        foreach (var history in _historyDictionary)
+        {
+            Console.WriteLine($"{item} - {history.Keys}");
+        }
+    }
+
+    static void Trip(Card card, string item)
+    {
+        Console.WriteLine($"{item} Поездка из дома.");
         while (_routeToTheOffice.Count > 0)
         {
             var transport = _routeToTheOffice.Dequeue();
             if (!card.Pay(transport.Fare))
             {
-                Console.WriteLine("Дальше пешком!");
+                Console.WriteLine($"{item} Дальше пешком!");
                 _routeToTheOffice.Clear();
                 return;
             }
@@ -44,13 +68,13 @@ static class Program
             _routeHome.Push(transport);
         }
 
-        Console.WriteLine("Поездка домой.");
+        Console.WriteLine($"{item} Поездка домой.");
         while (_routeHome.Count > 0)
         {
             if (!card.Pay(_routeHome.Pop().Fare))
             {
                 _routeHome.Clear();
-                Console.WriteLine("Дальше пешком!");
+                Console.WriteLine($"{item} Дальше пешком!");
                 return;
             }
         }
@@ -74,11 +98,11 @@ static class Program
         card.OnErrorOperations -= EventHandler.OnErrorOperationsHandler;
     }
 
-    static Queue<PublicTransport> CreatingRoute(Queue<PublicTransport> queue)
+    static Queue<PublicTransport> CreatingRoute(Queue<PublicTransport> queue, string item)
     {
         Random random = new Random();
         int count = random.Next(5, 11); // Генерация случайного числа от 5 до 10
-        Console.WriteLine($"Составлен маршрут: ");
+        Console.WriteLine($"{item} Составлен маршрут: ");
         for (int i = 0; i < count; i++)
         {
             int randomNumber = random.Next(1, 6);
@@ -108,7 +132,7 @@ static class Program
             if (transport != null)
             {
                 queue.Enqueue(transport);
-                Console.WriteLine($"Транспортное средство: {transport.GetType().Name}, № - {transport.ID}");
+                Console.WriteLine($"{item} Транспортное средство: {transport.GetType().Name}, № - {transport.ID}");
             }
         }
 

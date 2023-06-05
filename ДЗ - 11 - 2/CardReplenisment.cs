@@ -1,4 +1,4 @@
-﻿namespace ДЗ_12;
+﻿namespace HV_Lock;
 
 /// <summary>
 /// тут реализованна логика пополнения

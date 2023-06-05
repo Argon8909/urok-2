@@ -1,4 +1,4 @@
-﻿namespace ДЗ___11___2;
+﻿namespace HV_Lock;
 
 public class PublicTransport
 {
