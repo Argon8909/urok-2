@@ -15,9 +15,6 @@ static class Program
 
     public static void Main()
     {
-       
-
-
         // Создание экземпляров потоков
         Thread read_1 = new Thread(() => PrintHistory("поток 1 =>"));
         Thread read_2 = new Thread(() => PrintHistory("поток 2 =>"));
@@ -47,7 +44,7 @@ static class Program
     {
         foreach (var history in _historyDictionary)
         {
-           // Console.WriteLine($"{item} - {history.Keys}");
+            // Console.WriteLine($"{item} - {history.Keys}");
             Console.WriteLine($"{item} история операций: " + string.Join(", ", history.Keys));
         }
     }
