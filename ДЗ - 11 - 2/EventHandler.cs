@@ -118,7 +118,9 @@ public static class EventHandler
         {
             if (moneyDelta < 0)
             {
-                history.Add($"Списано: {+moneyDelta} руб. Остаток: {moneyBalance}  руб.", moneyBalance);
+                //history.Add($"Списано: {Math.Abs(moneyDelta)} руб. Остаток: {moneyBalance} руб.", moneyBalance);
+
+                history.Add($"Списано: {moneyDelta} руб. Остаток: {moneyBalance}  руб.", moneyBalance);
                 bool lockAcquired = false;
                 try
                 {
@@ -164,8 +166,9 @@ public static class EventHandler
         else
         {
             history.Add(
-                $"Недостаточно средств для списания! Необходимо минимум {+moneyDelta} руб. Баланс карты: {moneyBalance} р.",
+                $"Недостаточно средств для списания! Необходимо минимум {Math.Abs(moneyDelta)} руб. Баланс карты: {moneyBalance} р.",
                 moneyBalance);
+
             bool lockAcquired = false;
             try
             {

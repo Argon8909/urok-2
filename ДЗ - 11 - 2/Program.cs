@@ -15,11 +15,14 @@ static class Program
 
     public static void Main()
     {
-        // Создание экземпляров потоков с нужными именами
-        Thread read_1 = new Thread(() => PrintHistory("поток 1"));
-        Thread read_2 = new Thread(() => PrintHistory("поток 2"));
-        Thread write_1 = new Thread(() => Trip("поток 1"));
-        Thread write_2 = new Thread(() => Trip("поток 2"));
+       
+
+
+        // Создание экземпляров потоков
+        Thread read_1 = new Thread(() => PrintHistory("поток 1 =>"));
+        Thread read_2 = new Thread(() => PrintHistory("поток 2 =>"));
+        Thread write_1 = new Thread(() => Trip("поток 1 =>"));
+        Thread write_2 = new Thread(() => Trip("поток 2 =>"));
 
 
         SubscriptionEvent(TransportCard);
@@ -44,7 +47,8 @@ static class Program
     {
         foreach (var history in _historyDictionary)
         {
-            Console.WriteLine($"{item} - {history.Keys}");
+           // Console.WriteLine($"{item} - {history.Keys}");
+            Console.WriteLine($"{item} история операций: " + string.Join(", ", history.Keys));
         }
     }
 
