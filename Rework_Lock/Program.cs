@@ -1,10 +1,15 @@
 ﻿using Rework_Lock;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+//using static EventHandlers;
 
 static class Program
 {
-    static readonly Card TransportCard = new();
-    static Queue<PublicTransport> _routeToTheOffice = new();
-    static Stack<PublicTransport> _routeHome = new();
+    static readonly Card TransportCard1 = new();
+    static readonly Card TransportCard2 = new();
+    //static Queue<PublicTransport> _routeToTheOffice = new();
+    //static Stack<PublicTransport> _routeHome = new();
     public static List<Dictionary<string, decimal>> _historyDictionary = new();
 
 
@@ -13,11 +18,12 @@ static class Program
         // Создание экземпляров потоков
         Thread read_1 = new Thread(() => PrintHistory("поток 1 =>"));
         Thread read_2 = new Thread(() => PrintHistory("поток 2 =>"));
-        Thread write_1 = new Thread(() => Trip("поток 1 =>"));
-        Thread write_2 = new Thread(() => Trip("поток 2 =>"));
+        Thread write_1 = new Thread(() => TripSet(TransportCard1,"поток 1 =>"));
+        Thread write_2 = new Thread(() => TripSet(TransportCard2,"поток 2 =>"));
 
 
-        SubscriptionEvent(TransportCard);
+        SubscriptionEvent(TransportCard1);
+        SubscriptionEvent(TransportCard2);
 
         write_1.Start();
         write_2.Start();
@@ -25,14 +31,19 @@ static class Program
         read_1.Start();
         read_2.Start();
 
-        UnsubscribeEvent(TransportCard);
+        TransportCard1.PrintPaymentsHistory(nameof(TransportCard1));
+        TransportCard2.PrintPaymentsHistory(nameof(TransportCard2));
+        
+        UnsubscribeEvent(TransportCard1);
+        UnsubscribeEvent(TransportCard2);
     }
 
-    static void Trip(string item)
+   
+    static void TripSet(Card card, string item)
     {
-        _routeToTheOffice = CreatingRoute(_routeToTheOffice, item);
-        TransportCard.Replenishment(new Random().Next(1, 300));
-        Trip(TransportCard, item);
+        card.RouteToTheOffice = CreatingRoute(card.RouteToTheOffice, item);
+        card.Replenishment(new Random().Next(1, 300));
+        Trip(card, item);
     }
 
     static void PrintHistory(string item)
@@ -42,31 +53,32 @@ static class Program
         {
             // Console.WriteLine($"{item} - {history.Keys}");
             Console.WriteLine($"{item} история операций: " + string.Join(", ", history.Keys));
+
         }
     }
 
     static void Trip(Card card, string item)
     {
         Console.WriteLine($"{item} Поездка из дома.");
-        while (_routeToTheOffice.Count > 0)
+        while (card.RouteToTheOffice.Count > 0)
         {
-            var transport = _routeToTheOffice.Dequeue();
-            if (!card.Pay(transport.Fare))
+            var transport = card.RouteToTheOffice.Dequeue();
+            if (!card.Pay(transport.Fare, nameof(card)))
             {
                 Console.WriteLine($"{item} Дальше пешком!");
-                _routeToTheOffice.Clear();
+                card.RouteToTheOffice.Clear();
                 return;
             }
 
-            _routeHome.Push(transport);
+            card.RouteHome.Push(transport);
         }
 
         Console.WriteLine($"{item} Поездка домой.");
-        while (_routeHome.Count > 0)
+        while (card.RouteHome.Count > 0)
         {
-            if (!card.Pay(_routeHome.Pop().Fare))
+            if (!card.Pay(card.RouteHome.Pop().Fare, nameof(card)))
             {
-                _routeHome.Clear();
+                card.RouteHome.Clear();
                 Console.WriteLine($"{item} Дальше пешком!");
                 return;
             }

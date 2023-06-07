@@ -31,10 +31,19 @@ public class Card
     public event NotEnoughMoney OnNotEnoughMoney;
 
 
+    public Queue<PublicTransport> RouteToTheOffice { get; set; } //= null!;
+    public Stack<PublicTransport> RouteHome { get; set; }//= null!;
+
     //public List<decimal> History { get; set; }
     public List<string> PaymentsHistory { get; } = new();
 
     private decimal _moneyBalance;
+
+    public Card()
+    {
+        RouteToTheOffice = new Queue<PublicTransport>();
+        RouteHome = new Stack<PublicTransport>();
+    }
 
     /// <summary>
     /// Балланс
@@ -48,31 +57,31 @@ public class Card
     /// <summary>
     /// метод оплаты со счёта
     /// </summary>
-    /// <param name="canPay"></param>
     /// <param name="money">Сумма списания со счёта</param>
-    public bool Pay(decimal money) //Predicate<decimal> canPay
+    /// <param name="cardName"></param>
+    /// <param name="canPay"></param>
+    public bool Pay(decimal money, string cardName) 
     {
         if (MoneyBalance >= money)
         {
             MoneyBalance -= money;
             OnMoneyOperation?.Invoke(-money, MoneyBalance);
-            //PaymentsHistory.Add($"Списано {money} р. Баланс карты: {MoneyBalance} р.");
+            PaymentsHistory.Add($"Карта {cardName}. Списано {money} р. Баланс карты: {MoneyBalance} р.");
             OnHistoryOperation?.Invoke(-money, MoneyBalance);
-            //SetCashback(money);
             return true;
         }
         else
         {
-            // PaymentsHistory.Add($"Недостаточно средств для списания! Необходимо минимум {money} руб. Баланс карты: {MoneyBalance} р.");
+            PaymentsHistory.Add($"Карта {cardName}. Недостаточно средств для списания! Необходимо минимум {money} руб. Баланс карты: {MoneyBalance} р.");
             OnHistoryOperation?.Invoke(-money, MoneyBalance, true);
             OnNotEnoughMoney.Invoke(money, MoneyBalance);
             return false;
         }
     }
 
-    public void PrintPaymentsHistory()
+    public void PrintPaymentsHistory(string transportCard1Name)
     {
-        Console.WriteLine("История операций:");
+        Console.WriteLine($"История операций по {transportCard1Name}:");
         foreach (var history in PaymentsHistory)
         {
             Console.WriteLine(history);
@@ -80,7 +89,7 @@ public class Card
 
         Console.WriteLine("\n");
     }
-    
+
     /// <summary>
     /// Метод пополнения счёта
     /// </summary>
