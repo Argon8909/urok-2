@@ -1,8 +1,6 @@
-﻿using HV_Lock;
+﻿namespace Rework_Lock;
 
-namespace HV_Lock;
-
-public static class EventHandler
+public static class EventHandlers
 {
     public static void OnMoneyOperationHandler(decimal moneyDelta, decimal moneyBalance)
     {
@@ -15,19 +13,7 @@ public static class EventHandler
             Console.WriteLine($"Счёт пополнен на {moneyDelta} рублей. Баланс равен {moneyBalance}");
         }
     }
-
-    public static void OnCashbackChangeHandler(decimal CashbackDelta, decimal CashbackBalance)
-    {
-        if (CashbackDelta < 0)
-        {
-            Console.WriteLine(
-                $"Со счёта кэшбэка списано {CashbackDelta} рублей. Баланс кэшбэка равен {CashbackBalance}");
-        }
-        else if (CashbackDelta > 0)
-        {
-            Console.WriteLine($"Кэшбэк пополнен на {CashbackDelta} рублей. Баланс кэшбэка равен {CashbackBalance}");
-        }
-    }
+    
 
     public static void OnNotEnoughMoneyHandler(decimal writeOffValue, decimal moneyBalanse)
     {
@@ -47,67 +33,7 @@ public static class EventHandler
         }
     }
 
-    public static void OnOnHistoryOperationHandler1(decimal moneyDelta, decimal moneyBalance, bool errorOperation)
-    {
-        Dictionary<string, decimal> history = new();
-
-        if (!errorOperation)
-        {
-            if (moneyDelta < 0)
-            {
-                history.Add($"Списано: {+moneyDelta} руб. Остаток: {moneyBalance}  руб.", moneyBalance);
-                Program._historyDictionary.Add(history);
-            }
-            else if (moneyDelta > 0)
-            {
-                history.Add($"Зачислено: {moneyDelta} руб. Остаток: {moneyBalance}  руб.", moneyBalance);
-                Program._historyDictionary.Add(history);
-            }
-        }
-        else
-        {
-            history.Add(
-                $"Недостаточно средств для списания! Необходимо минимум {+moneyDelta} руб. Баланс карты: {moneyBalance} р.",
-                moneyBalance);
-            Program._historyDictionary.Add(history);
-        }
-    }
-
-    public static void OnOnHistoryOperationHandler2(decimal moneyDelta, decimal moneyBalance, bool errorOperation)
-    {
-        Dictionary<string, decimal> history = new();
-
-        if (!errorOperation)
-        {
-            if (moneyDelta < 0)
-            {
-                history.Add($"Списано: {+moneyDelta} руб. Остаток: {moneyBalance}  руб.", moneyBalance);
-                lock (Program._historyDictionary)
-                {
-                    Program._historyDictionary.Add(history);
-                }
-            }
-            else if (moneyDelta > 0)
-            {
-                history.Add($"Зачислено: {moneyDelta} руб. Остаток: {moneyBalance}  руб.", moneyBalance);
-                lock (Program._historyDictionary)
-                {
-                    Program._historyDictionary.Add(history);
-                }
-            }
-        }
-        else
-        {
-            history.Add(
-                $"Недостаточно средств для списания! Необходимо минимум {+moneyDelta} руб. Баланс карты: {moneyBalance} р.",
-                moneyBalance);
-            lock (Program._historyDictionary)
-            {
-                Program._historyDictionary.Add(history);
-            }
-        }
-    }
-/*
+    /*
  Написать потокобезопасный прием платежей и вывод транзакций по транспортной карте.
 
 public List<decimal> History { get; set; } - список со всеми транзакциями.

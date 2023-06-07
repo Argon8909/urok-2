@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Net.Sockets;
-using HV_Lock;
-using EventHandler = HV_Lock.EventHandler;
-
-namespace HV_Lock;
+﻿using Rework_Lock;
 
 static class Program
 {
@@ -80,20 +75,18 @@ static class Program
 
     static void SubscriptionEvent(Card card)
     {
-        card.OnHistoryOperation += EventHandler.OnHistoryOperationHandler;
-        card.OnMoneyOperation += EventHandler.OnMoneyOperationHandler;
-        card.OnCashbackChange += EventHandler.OnCashbackChangeHandler;
-        card.OnNotEnoughMoney += EventHandler.OnNotEnoughMoneyHandler;
-        card.OnErrorOperations += EventHandler.OnErrorOperationsHandler;
+        card.OnHistoryOperation += EventHandlers.OnHistoryOperationHandler;
+        card.OnMoneyOperation += EventHandlers.OnMoneyOperationHandler;
+        card.OnNotEnoughMoney += EventHandlers.OnNotEnoughMoneyHandler;
+        card.OnErrorOperations += EventHandlers.OnErrorOperationsHandler;
     }
 
     static void UnsubscribeEvent(Card card)
     {
-        card.OnHistoryOperation -= EventHandler.OnHistoryOperationHandler;
-        card.OnMoneyOperation -= EventHandler.OnMoneyOperationHandler;
-        card.OnCashbackChange -= EventHandler.OnCashbackChangeHandler;
-        card.OnNotEnoughMoney -= EventHandler.OnNotEnoughMoneyHandler;
-        card.OnErrorOperations -= EventHandler.OnErrorOperationsHandler;
+        card.OnHistoryOperation -= EventHandlers.OnHistoryOperationHandler;
+        card.OnMoneyOperation -= EventHandlers.OnMoneyOperationHandler;
+        card.OnNotEnoughMoney -= EventHandlers.OnNotEnoughMoneyHandler;
+        card.OnErrorOperations -= EventHandlers.OnErrorOperationsHandler;
     }
 
     static Queue<PublicTransport> CreatingRoute(Queue<PublicTransport> queue, string item)
@@ -138,54 +131,3 @@ static class Program
         return queue;
     }
 }
-
-
-/*
- 
-   // Создание экземпляров потоков с нужными именами
-        Thread read_1 = new Thread(ReadOperation);
-        Thread read_2 = new Thread(ReadOperation);
-        Thread write_1 = new Thread(WriteOperation);
-        Thread write_2 = new Thread(WriteOperation);
-
-// Добавление потоков в коллекцию
-        _threadsOperration.Add(read_1);
-        _threadsOperration.Add(read_2);
-        _threadsOperration.Add(write_1);
-        _threadsOperration.Add(write_2);
- 
- static void QueueInit(Queue queue, int quantity)
-    {
-        for (int i = 0; i < quantity; i++)
-        {
-            // queue.Enqueue (Card TransportCard );
-        }
-    }
- 
-   static List<Card> ListInit(List<Card> card, int quantity)
-    {
-        for (int i = 0; i < quantity; i++)
-        {
-            card.Add(new Card());
-        }
-    }
- 
- for (int i = 0; i < 5; i++)
-        {
-            Console.WriteLine("-----------------------------");
-            TransportCard.OnMoneyOperation += EventHandler.OnMoneyOperationHandler;
-            TransportCard.OnCashbackChange += EventHandler.OnCashbackChangeHandler;
-            TransportCard.OnNotEnoughMoney += EventHandler.OnNotEnoughMoneyHandler;
-            TransportCard.OnErrorOperations += EventHandler.OnErrorOperationsHandler;
-
-            TransportCard.Replenishment(new Random().Next(1, 60));
-            TransportCard.Pay(x => x >= 30, 30);
-            TransportCard.PrintPaymentsHistory();
-            TransportCard.SetCasbackPercent(new Random().Next(1, 50));
-
-            TransportCard.OnMoneyOperation -= EventHandler.OnMoneyOperationHandler;
-            TransportCard.OnCashbackChange -= EventHandler.OnCashbackChangeHandler;
-            TransportCard.OnNotEnoughMoney -= EventHandler.OnNotEnoughMoneyHandler;
-            TransportCard.OnErrorOperations -= EventHandler.OnErrorOperationsHandler;
-        }
-*/
