@@ -45,6 +45,7 @@ public static class EventHandlers
         }
     }
 
+    [Obsolete]
     public static void OnOnHistoryOperationHandler1(decimal moneyDelta, decimal moneyBalance, bool errorOperation)
     {
         Dictionary<string, decimal> history = new();
@@ -71,6 +72,7 @@ public static class EventHandlers
         }
     }
 
+    [Obsolete]
     public static void OnOnHistoryOperationHandler2(decimal moneyDelta, decimal moneyBalance, bool errorOperation)
     {
         Dictionary<string, decimal> history = new();
