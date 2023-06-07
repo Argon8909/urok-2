@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ДЗ - 11 - 2", "ДЗ - 11 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks", "Tasks\Tasks.csproj", "{48D06C26-0685-4613-8179-722024E4E03E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Factorial", "Factorial\Factorial.csproj", "{F65581F5-85AC-4284-9031-ADFC314670C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{48D06C26-0685-4613-8179-722024E4E03E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48D06C26-0685-4613-8179-722024E4E03E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48D06C26-0685-4613-8179-722024E4E03E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F65581F5-85AC-4284-9031-ADFC314670C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F65581F5-85AC-4284-9031-ADFC314670C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F65581F5-85AC-4284-9031-ADFC314670C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F65581F5-85AC-4284-9031-ADFC314670C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
