@@ -1,6 +1,5 @@
 ﻿namespace TransportCard_Task;
 
-
 public static class EventHandlers
 {
     public static void OnMoneyOperationHandler(decimal moneyDelta, decimal moneyBalance)

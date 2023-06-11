@@ -15,10 +15,10 @@ static class Program
     public static void Main()
     {
         // Создание экземпляров потоков
-        Thread write_1 = new Thread(() => TripSet(TransportCard1, "поток 1 =>"));
-        Thread write_2 = new Thread(() => TripSet(TransportCard2, "поток 2 =>"));
-        Thread read_1 = new Thread(() => PrintHistory("поток 1 =>"));
-        Thread read_2 = new Thread(() => PrintHistory("поток 2 =>"));
+        Task write_1 = new Task(() => TripSet(TransportCard1, "поток 1 =>"));
+        Task write_2 = new Task(() => TripSet(TransportCard2, "поток 2 =>"));
+        Task read_1 = new Task(() => PrintHistory("поток 1 =>"));
+        Task read_2 = new Task(() => PrintHistory("поток 2 =>"));
 
 
         SubscriptionEvent(TransportCard1);
