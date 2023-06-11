@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ДЗ - 11 - 2", "ДЗ - 11 - 2\ДЗ - 11 - 2.csproj", "{BFCB4AED-8E70-43C0-BC74-FADFB5D43F6E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Old_Version", "Old_Version\Old_Version.csproj", "{BFCB4AED-8E70-43C0-BC74-FADFB5D43F6E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rework_Lock", "Rework_Lock\Rework_Lock.csproj", "{1964233D-4CC6-424A-BA6C-8FC832543C59}"
 EndProject
