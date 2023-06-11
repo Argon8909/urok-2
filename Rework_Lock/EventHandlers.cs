@@ -56,10 +56,10 @@ public List<decimal> History { get; set; } - список со всеми тра
                 bool lockAcquired = false;
                 try
                 {
-                    if (Monitor.TryEnter(historyLock, TimeSpan.FromSeconds(5)))
+                    if (Monitor.TryEnter(historyLock, TimeSpan.FromSeconds(1)))
                     {
                         lockAcquired = true;
-                        Program._historyDictionary.Add(history);
+                        Program.HistoryAllCard.Add(history);
                     }
                     else
                     {
@@ -78,10 +78,10 @@ public List<decimal> History { get; set; } - список со всеми тра
                 bool lockAcquired = false;
                 try
                 {
-                    if (Monitor.TryEnter(historyLock, TimeSpan.FromSeconds(5)))
+                    if (Monitor.TryEnter(historyLock, TimeSpan.FromSeconds(1)))
                     {
                         lockAcquired = true;
-                        Program._historyDictionary.Add(history);
+                        Program.HistoryAllCard.Add(history);
                     }
                     else
                     {
@@ -104,10 +104,10 @@ public List<decimal> History { get; set; } - список со всеми тра
             bool lockAcquired = false;
             try
             {
-                if (Monitor.TryEnter(historyLock, TimeSpan.FromSeconds(5)))
+                if (Monitor.TryEnter(historyLock, TimeSpan.FromSeconds(1)))
                 {
                     lockAcquired = true;
-                    Program._historyDictionary.Add(history);
+                    Program.HistoryAllCard.Add(history);
                 }
                 else
                 {

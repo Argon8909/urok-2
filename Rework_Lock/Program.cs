@@ -2,24 +2,23 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+
 //using static EventHandlers;
 
 static class Program
 {
     static readonly Card TransportCard1 = new();
     static readonly Card TransportCard2 = new();
-    //static Queue<PublicTransport> _routeToTheOffice = new();
-    //static Stack<PublicTransport> _routeHome = new();
-    public static List<Dictionary<string, decimal>> _historyDictionary = new();
-
+    public static List<Dictionary<string, decimal>> HistoryAllCard = new();
+    private static object _lockObject = new object();
 
     public static void Main()
     {
         // Создание экземпляров потоков
+        Thread write_1 = new Thread(() => TripSet(TransportCard1, "поток 1 =>"));
+        Thread write_2 = new Thread(() => TripSet(TransportCard2, "поток 2 =>"));
         Thread read_1 = new Thread(() => PrintHistory("поток 1 =>"));
         Thread read_2 = new Thread(() => PrintHistory("поток 2 =>"));
-        Thread write_1 = new Thread(() => TripSet(TransportCard1,"поток 1 =>"));
-        Thread write_2 = new Thread(() => TripSet(TransportCard2,"поток 2 =>"));
 
 
         SubscriptionEvent(TransportCard1);
@@ -33,12 +32,12 @@ static class Program
 
         TransportCard1.PrintPaymentsHistory(nameof(TransportCard1));
         TransportCard2.PrintPaymentsHistory(nameof(TransportCard2));
-        
+
         UnsubscribeEvent(TransportCard1);
         UnsubscribeEvent(TransportCard2);
     }
 
-   
+
     static void TripSet(Card card, string item)
     {
         card.RouteToTheOffice = CreatingRoute(card.RouteToTheOffice, item);
@@ -48,12 +47,12 @@ static class Program
 
     static void PrintHistory(string item)
     {
-        
-        foreach (var history in _historyDictionary)
+        lock (_lockObject)
         {
-            // Console.WriteLine($"{item} - {history.Keys}");
-            Console.WriteLine($"{item} история операций: " + string.Join(", ", history.Keys));
-
+            foreach (var history in HistoryAllCard)
+            {
+                Console.WriteLine($"{item} история операций общая: " + string.Join(", ", history.Keys));
+            }
         }
     }
 
