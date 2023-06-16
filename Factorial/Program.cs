@@ -1,4 +1,6 @@
-﻿namespace Factorial;
+﻿using System.Diagnostics;
+
+namespace Factorial;
 
 /*
  * Написать программу. Дан список чисел(одномерный массив). Нужно в количестве равном N создать таски, внутри которых
@@ -7,18 +9,71 @@
  */
 static class Program
 {
+    private static Stopwatch _stopwatch = new Stopwatch();
     private static List<Task> _tasks = new List<Task>();
-    private const int TaskQuantity = 5;
-    private const int ArrCapacity = 10;
+    private static int TaskQuantity = 4;
+    private const int ArrCapacity = 25;
     private static List<int> Arr = new();
     private static Random _random = new();
     private static Queue<int> _queueIntegerToFactorial = new();
 
     public static void Main()
     {
-        // List<Task> tasks = new List<Task>();
+        Stopwatch stopwatch = new Stopwatch();
 
+        // Запуск секундомера
+        stopwatch.Start();
+        QueueGen();
+        TasksGen();
+        TaskStart();
+        Task.WaitAll(_tasks.ToArray());
+        // Остановка секундомера
+        stopwatch.Stop();
 
+        // Получение прошедшего времени
+        TimeSpan elapsedTime = stopwatch.Elapsed;
+
+        Console.WriteLine($"Время выполнения задачи с помощью {TaskQuantity} тасок: " + elapsedTime);
+
+        stopwatch.Reset();
+
+        TaskQuantity = 1;
+        _tasks.Clear();
+        // Запуск секундомера
+        stopwatch.Restart();
+        QueueGen();
+        TasksGen();
+        TaskStart();
+        Task.WaitAll(_tasks.ToArray());
+        // Остановка секундомера
+        stopwatch.Stop();
+
+        // Получение прошедшего времени
+        elapsedTime = stopwatch.Elapsed;
+
+        Console.WriteLine($"Время выполнения задачи с помощью {TaskQuantity} тасок: " + elapsedTime);
+    }
+
+    static void TaskStart()
+    {
+        foreach (var task in _tasks)
+        {
+            task.Start();
+        }
+    }
+
+    static void TasksGen()
+    {
+        for (int i = 0; i < TaskQuantity; i++)
+        {
+            int i1 = i;
+            //_tasks.Add(new Task(() => TasksWorker(i1)));
+            _tasks.Add(new Task(() => TasksWorker(i1), TaskCreationOptions.LongRunning));
+        }
+    }
+
+    static void QueueGen()
+    {
         for (int i = 0; i < ArrCapacity; i++)
         {
             int q = _random.Next(0, 10);
@@ -27,19 +82,7 @@ static class Program
             Console.Write(q + ", ");
         }
 
-        for (int i = 0; i < TaskQuantity; i++)
-        {
-            //Console.WriteLine($"i = {i} ");
-            int i1 = i;
-            _tasks.Add(new Task(() => TasksWorker(i1)));
-        }
-
-        foreach (var task in _tasks)
-        {
-            task.Start();
-        }
-
-        Task.WaitAll(_tasks.ToArray());
+        Console.WriteLine("");
     }
 
     static void TasksWorker(int i)

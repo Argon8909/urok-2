@@ -1,8 +1,8 @@
 ﻿namespace Tasks;
 
-public class PublicTransport
+public abstract class PublicTransport
 {
-    internal Random random = new Random();
+    internal readonly Random Random = new Random();
 
     public delegate void TransportTrip(decimal moneyPay, decimal moneyBalance, string message);
 
@@ -11,10 +11,10 @@ public class PublicTransport
     /// </summary>
     public event TransportTrip OnTransportTrip;
 
-    public decimal Fare { get; set; }
+    public decimal Fare { get; protected init; }
 
     //private byte _number = default;
-    public byte ID { get; set; }
+    public byte ID { get; protected init; }
 }
 
 public class Bus : PublicTransport
@@ -22,7 +22,7 @@ public class Bus : PublicTransport
     public Bus()
     {
         Fare = 40;
-        ID = (byte) random.Next(1, 99);
+        ID = (byte) Random.Next(1, 99);
     }
 }
 
@@ -31,7 +31,7 @@ public class Metro : PublicTransport
     public Metro()
     {
         Fare = 100;
-        ID = (byte) random.Next(1, 99);
+        ID = (byte) Random.Next(1, 99);
     }
 }
 
@@ -40,7 +40,7 @@ public class Minibus : PublicTransport
     public Minibus()
     {
         Fare = 60;
-        ID = (byte) random.Next(1, 99);
+        ID = (byte) Random.Next(1, 99);
     }
 }
 
@@ -49,7 +49,7 @@ public class Tram : PublicTransport
     public Tram()
     {
         Fare = 30;
-        ID = (byte) random.Next(1, 99);
+        ID = (byte) Random.Next(1, 99);
     }
 }
 
@@ -58,6 +58,6 @@ public class Trolleybus : PublicTransport
     public Trolleybus()
     {
         Fare = 35;
-        ID = (byte) random.Next(1, 99);
+        ID = (byte) Random.Next(1, 99);
     }
 }
