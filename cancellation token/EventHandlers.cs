@@ -2,33 +2,33 @@
 
 public static class EventHandlers
 {
-    public static void OnMoneyOperationHandler(decimal moneyDelta, decimal moneyBalance)
+    public static void OnMoneyOperationHandler(decimal moneyDelta, decimal moneyBalance, string cardName)
     {
         if (moneyDelta < 0)
         {
-            Console.WriteLine($"Со счёта списано {-moneyDelta} рублей. Баланс равен {moneyBalance}");
+            Console.WriteLine($"{cardName} >>>> Со счёта списано {-moneyDelta} рублей. Баланс равен {moneyBalance}");
         }
         else if (moneyDelta > 0)
         {
-            Console.WriteLine($"Счёт пополнен на {moneyDelta} рублей. Баланс равен {moneyBalance}");
+            Console.WriteLine($"{cardName} >>>> Счёт пополнен на {moneyDelta} рублей. Баланс равен {moneyBalance}");
         }
     }
 
-    public static void OnNotEnoughMoneyHandler(decimal writeOffValue, decimal moneyBalanse)
+    public static void OnNotEnoughMoneyHandler(decimal writeOffValue, decimal moneyBalanse, string cardName)
     {
         Console.WriteLine(
-            $"Недостаточно средств на счету! Сумма списания {writeOffValue} рублей, сумма на балансе {moneyBalanse} рублей.");
+            $"{cardName} >->-> Недостаточно средств на счету! Сумма списания {writeOffValue} рублей, сумма на балансе {moneyBalanse} рублей.");
     }
 
-    public static void OnErrorOperationsHandler(decimal invalidValue)
+    public static void OnErrorOperationsHandler(decimal invalidValue, string cardName)
     {
         if (invalidValue == 0)
         {
-            Console.WriteLine($"Ошибка! была попытка пополнить счёт на 0 руб.");
+            Console.WriteLine($"{cardName} >+>+> Ошибка! была попытка пополнить счёт на 0 руб.");
         }
         else if (invalidValue < 0)
         {
-            Console.WriteLine($"Ошибка! Нельзя пополнить счёт отрицательным значением!");
+            Console.WriteLine($"{cardName} >+>+> Ошибка! Нельзя пополнить счёт отрицательным значением!");
         }
     }
 
@@ -41,7 +41,7 @@ public List<decimal> History { get; set; } - список со всеми тра
  */
     private static object historyLock = new object();
 
-    public static void OnHistoryOperationHandler(decimal moneyDelta, decimal moneyBalance, bool errorOperation)
+    public static void OnHistoryOperationHandler(decimal moneyDelta, decimal moneyBalance, string cardName, bool errorOperation)
     {
         Dictionary<string, decimal> history = new();
 
@@ -51,7 +51,7 @@ public List<decimal> History { get; set; } - список со всеми тра
             {
                 //history.Add($"Списано: {Math.Abs(moneyDelta)} руб. Остаток: {moneyBalance} руб.", moneyBalance);
 
-                history.Add($"Списано: {moneyDelta} руб. Остаток: {moneyBalance}  руб.", moneyBalance);
+                history.Add($"{cardName}--> Списано: {moneyDelta} руб. Остаток: {moneyBalance}  руб.", moneyBalance);
                 bool lockAcquired = false;
                 try
                 {
@@ -73,7 +73,7 @@ public List<decimal> History { get; set; } - список со всеми тра
             }
             else if (moneyDelta > 0)
             {
-                history.Add($"Зачислено: {moneyDelta} руб. Остаток: {moneyBalance}  руб.", moneyBalance);
+                history.Add($"{cardName}--> Зачислено: {moneyDelta} руб. Остаток: {moneyBalance}  руб.", moneyBalance);
                 bool lockAcquired = false;
                 try
                 {
@@ -97,7 +97,7 @@ public List<decimal> History { get; set; } - список со всеми тра
         else
         {
             history.Add(
-                $"Недостаточно средств для списания! Необходимо минимум {Math.Abs(moneyDelta)} руб. Баланс карты: {moneyBalance} р.",
+                $"{cardName}--> Недостаточно средств для списания! Необходимо минимум {Math.Abs(moneyDelta)} руб. Баланс карты: {moneyBalance} р.",
                 moneyBalance);
 
             bool lockAcquired = false;

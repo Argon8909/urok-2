@@ -2,57 +2,19 @@
 
 namespace cancellation_token;
 
-public class Card
+public  partial class Card
 {
-    public delegate void HistoryOperation(decimal moneyDelta, decimal moneyBalance, bool errorOperation = false);
-
-    /// <summary>
-    /// Событие истории операций.
-    /// </summary>
-    public event HistoryOperation? OnHistoryOperation;
-
-    public delegate void MoneyOperation(decimal moneyDelta, decimal moneyBalance);
-
-    /// <summary>
-    /// Событие изменения счёта.
-    /// </summary>
-    public event MoneyOperation? OnMoneyOperation;
-
-    public delegate void ErrorOperations(decimal invalidValue);
-
-    /// <summary>
-    /// Событие ошибки
-    /// </summary>
-    public event ErrorOperations? OnErrorOperations;
-
-    public delegate void NotEnoughMoney(decimal writeOffValue, decimal moneyBalance);
-
-    /// <summary>
-    /// Событие - недостаточно средств.
-    /// </summary>
-    public event NotEnoughMoney? OnNotEnoughMoney;
-
-    public Queue<PublicTransport> RouteToTheOffice { get; set; }
-    public Stack<PublicTransport> RouteHome { get; set; }
-
-    public List<string> PaymentsHistory { get; } = new();
-
-    private readonly decimal _minBalance;
-    private readonly decimal _maxBalance;
-
-    public Card(decimal minBalance, decimal maxBalance)
+    public Card(decimal minBalance, decimal maxBalance, string cardName)
     {
+        CardName = cardName;
         RouteToTheOffice = new Queue<PublicTransport>();
         RouteHome = new Stack<PublicTransport>();
 
         _minBalance = minBalance;
         _maxBalance = maxBalance;
+        _banOnReplenishment = false;
+        _banOnPayment = false;
     }
-
-    /// <summary>
-    /// Балланс
-    /// </summary>
-    public decimal MoneyBalance { get; private set; }
 
     /// <summary>
     /// метод оплаты со счёта
@@ -60,29 +22,47 @@ public class Card
     /// <param name="money">Сумма списания со счёта</param>
     /// <param name="cardName"></param>
     /// <param name="canPay"></param>
-    public bool Pay(decimal money, string cardName)
+    public bool Pay(decimal money)
     {
-        if (MoneyBalance >= money)
+        if (MoneyBalance > _minBalance)
+        {
+            _banOnPayment = false;
+        }
+        
+        if (MoneyBalance >= money && _banOnPayment == false)
         {
             MoneyBalance -= money;
-            OnMoneyOperation?.Invoke(-money, MoneyBalance);
-            PaymentsHistory.Add($"Карта {cardName}. Списано {money} р. Баланс карты: {MoneyBalance} р.");
-            OnHistoryOperation?.Invoke(-money, MoneyBalance);
+            try
+            {
+                CheckBalance();
+            }
+            catch (Exception e)
+            {
+                //Console.WriteLine(e);
+                PaymentsHistory.Add(
+                    $"{CardName} ==>> Списано {money} р. Баланс на карте снизился ниже минимального значения. Баланс карты: {MoneyBalance} р.");
+                _banOnReplenishment = true;
+                throw;
+            }
+            //Math.Abs()
+            OnMoneyOperation?.Invoke(-money, MoneyBalance, CardName);
+            PaymentsHistory.Add($"Карта {CardName}. Списано {money} р. Баланс карты: {MoneyBalance} р.");
+            OnHistoryOperation?.Invoke(-money, MoneyBalance, CardName);
             return true;
         }
         else
         {
             PaymentsHistory.Add(
-                $"Карта {cardName}. Недостаточно средств для списания! Необходимо минимум {money} руб. Баланс карты: {MoneyBalance} р.");
-            OnHistoryOperation?.Invoke(-money, MoneyBalance, true);
-            OnNotEnoughMoney?.Invoke(money, MoneyBalance);
+                $"Карта {CardName}. Недостаточно средств для списания! Необходимо минимум {money} руб. Баланс карты: {MoneyBalance} р.");
+            OnHistoryOperation?.Invoke(-money, MoneyBalance, CardName, true);
+            OnNotEnoughMoney?.Invoke(money, MoneyBalance, CardName);
             return false;
         }
     }
 
-    public void PrintPaymentsHistory(string transportCard1Name)
+    public void PrintPaymentsHistory()
     {
-        Console.WriteLine($"История операций по {transportCard1Name}:");
+        Console.WriteLine($"История операций по {CardName}:");
         foreach (var history in PaymentsHistory)
         {
             Console.WriteLine(history);
@@ -90,50 +70,58 @@ public class Card
 
         Console.WriteLine("\n");
     }
+
     /// <summary>
     /// Метод пополнения счёта
     /// </summary>
     /// <param name="money"></param>
     public void Replenishment(decimal money)
     {
-        if (money > 0)
+        if (MoneyBalance < _maxBalance)
+        {
+            _banOnReplenishment = false;
+        }
+
+        if (money > 0 && _banOnReplenishment == false)
         {
             MoneyBalance += money;
-            PaymentsHistory.Add($"Пополнено на {money} р. Баланс карты: {MoneyBalance} р.");
-           // CheckBalance();
-            OnMoneyOperation?.Invoke(money, MoneyBalance);
-            OnHistoryOperation?.Invoke(-money, MoneyBalance);
+
+            try
+            {
+                CheckBalance();
+            }
+            catch (Exception e)
+            {
+                //Console.WriteLine(e);
+                PaymentsHistory.Add(
+                    $"{CardName} ==>> Пополнено на {money} р. Превышен максимальный баланс на карте. Баланс карты: {MoneyBalance} р.");
+                _banOnReplenishment = true;
+                throw;
+            }
+
+            PaymentsHistory.Add($"{CardName} ==>> Пополнено на {money} р. Баланс карты: {MoneyBalance} р.");
+            OnMoneyOperation?.Invoke(money, MoneyBalance, CardName);
+            OnHistoryOperation?.Invoke(-money, MoneyBalance, CardName);
         }
         else
         {
-            OnErrorOperations?.Invoke(money);
+            OnErrorOperations?.Invoke(money, CardName);
         }
     }
 
-    public void CheckBalance()
+    private void CheckBalance()
     {
         if (MoneyBalance < _minBalance)
         {
-            throw new InsufficientBalanceException("Недостаточный баланс на карте.");
+            throw new InsufficientBalanceException(
+                "--->>>Достигнут минимальный баланс на карте. Дальнейшее списание невозможно!");
         }
 
         if (MoneyBalance > _maxBalance)
         {
-            throw new ExcessiveBalanceException("Превышен максимальный баланс на карте.");
+            throw new ExcessiveBalanceException(
+                "--->>>Достигнут максимальный баланс на карте. Дальнейшее пополнение невозможно!");
         }
     }
 }
 
-public class InsufficientBalanceException : Exception
-{
-    public InsufficientBalanceException(string message) : base(message)
-    {
-    }
-}
-
-public class ExcessiveBalanceException : Exception
-{
-    public ExcessiveBalanceException(string message) : base(message)
-    {
-    }
-}
