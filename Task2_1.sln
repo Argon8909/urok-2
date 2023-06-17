@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rework_Lock", "Rework_Lock\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransportCard_Task", "TransportCard_Task\TransportCard_Task.csproj", "{7BFB264B-A19F-4454-BA3A-1AB37F948F47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cancellation token", "cancellation token\cancellation token.csproj", "{38CB2E3A-5D8A-472C-8A33-9155C9B81A2F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{7BFB264B-A19F-4454-BA3A-1AB37F948F47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BFB264B-A19F-4454-BA3A-1AB37F948F47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BFB264B-A19F-4454-BA3A-1AB37F948F47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38CB2E3A-5D8A-472C-8A33-9155C9B81A2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38CB2E3A-5D8A-472C-8A33-9155C9B81A2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38CB2E3A-5D8A-472C-8A33-9155C9B81A2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38CB2E3A-5D8A-472C-8A33-9155C9B81A2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
