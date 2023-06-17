@@ -1,12 +1,12 @@
-﻿using  cancellation_token;
+﻿using cancellation_token;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 
 static class Program
 {
-    static readonly Card TransportCard1 = new();
-    static readonly Card TransportCard2 = new();
+    static readonly Card TransportCard1 = new(10, 500);
+    static readonly Card TransportCard2 = new(50, 250);
     public static List<Dictionary<string, decimal>> HistoryAllCard = new();
     private static object _lockObject = new object();
 
@@ -17,7 +17,6 @@ static class Program
         Task write_2 = new Task(() => TripSet(TransportCard2, "поток 2 =>"));
         Task read_1 = new Task(() => PrintHistory("поток 1 =>"));
         Task read_2 = new Task(() => PrintHistory("поток 2 =>"));
-
 
         SubscriptionEvent(TransportCard1);
         SubscriptionEvent(TransportCard2);
@@ -34,7 +33,6 @@ static class Program
         UnsubscribeEvent(TransportCard1);
         UnsubscribeEvent(TransportCard2);
     }
-
 
     static void TripSet(Card card, string item)
     {

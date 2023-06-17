@@ -1,5 +1,6 @@
-﻿namespace cancellation_token;
+﻿using System;
 
+namespace cancellation_token;
 
 public class Card
 {
@@ -8,52 +9,50 @@ public class Card
     /// <summary>
     /// Событие истории операций.
     /// </summary>
-    public event HistoryOperation OnHistoryOperation;
+    public event HistoryOperation? OnHistoryOperation;
 
     public delegate void MoneyOperation(decimal moneyDelta, decimal moneyBalance);
 
     /// <summary>
     /// Событие изменения счёта.
     /// </summary>
-    public event MoneyOperation OnMoneyOperation;
+    public event MoneyOperation? OnMoneyOperation;
 
     public delegate void ErrorOperations(decimal invalidValue);
 
     /// <summary>
     /// Событие ошибки
     /// </summary>
-    public event ErrorOperations OnErrorOperations;
+    public event ErrorOperations? OnErrorOperations;
 
-    public delegate void NotEnoughMoney(decimal writeOffValue, decimal moneyBalanse);
+    public delegate void NotEnoughMoney(decimal writeOffValue, decimal moneyBalance);
 
     /// <summary>
     /// Событие - недостаточно средств.
     /// </summary>
-    public event NotEnoughMoney OnNotEnoughMoney;
+    public event NotEnoughMoney? OnNotEnoughMoney;
 
+    public Queue<PublicTransport> RouteToTheOffice { get; set; }
+    public Stack<PublicTransport> RouteHome { get; set; }
 
-    public Queue<PublicTransport> RouteToTheOffice { get; set; } //= null!;
-    public Stack<PublicTransport> RouteHome { get; set; }//= null!;
-
-    //public List<decimal> History { get; set; }
     public List<string> PaymentsHistory { get; } = new();
 
-    private decimal _moneyBalance;
+    private readonly decimal _minBalance;
+    private readonly decimal _maxBalance;
 
-    public Card()
+    public Card(decimal minBalance, decimal maxBalance)
     {
         RouteToTheOffice = new Queue<PublicTransport>();
         RouteHome = new Stack<PublicTransport>();
+
+        _minBalance = minBalance;
+        _maxBalance = maxBalance;
     }
 
     /// <summary>
     /// Балланс
     /// </summary>
-    public decimal MoneyBalance
-    {
-        get => _moneyBalance;
-        private set { _moneyBalance = value; }
-    }
+    public decimal MoneyBalance { get; private set; }
 
     /// <summary>
     /// метод оплаты со счёта
@@ -61,7 +60,7 @@ public class Card
     /// <param name="money">Сумма списания со счёта</param>
     /// <param name="cardName"></param>
     /// <param name="canPay"></param>
-    public bool Pay(decimal money, string cardName) 
+    public bool Pay(decimal money, string cardName)
     {
         if (MoneyBalance >= money)
         {
@@ -73,9 +72,10 @@ public class Card
         }
         else
         {
-            PaymentsHistory.Add($"Карта {cardName}. Недостаточно средств для списания! Необходимо минимум {money} руб. Баланс карты: {MoneyBalance} р.");
+            PaymentsHistory.Add(
+                $"Карта {cardName}. Недостаточно средств для списания! Необходимо минимум {money} руб. Баланс карты: {MoneyBalance} р.");
             OnHistoryOperation?.Invoke(-money, MoneyBalance, true);
-            OnNotEnoughMoney.Invoke(money, MoneyBalance);
+            OnNotEnoughMoney?.Invoke(money, MoneyBalance);
             return false;
         }
     }
@@ -90,7 +90,6 @@ public class Card
 
         Console.WriteLine("\n");
     }
-
     /// <summary>
     /// Метод пополнения счёта
     /// </summary>
@@ -101,12 +100,40 @@ public class Card
         {
             MoneyBalance += money;
             PaymentsHistory.Add($"Пополнено на {money} р. Баланс карты: {MoneyBalance} р.");
-            OnMoneyOperation.Invoke(money, MoneyBalance);
+           // CheckBalance();
+            OnMoneyOperation?.Invoke(money, MoneyBalance);
             OnHistoryOperation?.Invoke(-money, MoneyBalance);
         }
         else
         {
-            OnErrorOperations.Invoke(money);
+            OnErrorOperations?.Invoke(money);
         }
+    }
+
+    public void CheckBalance()
+    {
+        if (MoneyBalance < _minBalance)
+        {
+            throw new InsufficientBalanceException("Недостаточный баланс на карте.");
+        }
+
+        if (MoneyBalance > _maxBalance)
+        {
+            throw new ExcessiveBalanceException("Превышен максимальный баланс на карте.");
+        }
+    }
+}
+
+public class InsufficientBalanceException : Exception
+{
+    public InsufficientBalanceException(string message) : base(message)
+    {
+    }
+}
+
+public class ExcessiveBalanceException : Exception
+{
+    public ExcessiveBalanceException(string message) : base(message)
+    {
     }
 }

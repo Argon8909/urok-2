@@ -13,7 +13,6 @@ public static class EventHandlers
             Console.WriteLine($"Счёт пополнен на {moneyDelta} рублей. Баланс равен {moneyBalance}");
         }
     }
-    
 
     public static void OnNotEnoughMoneyHandler(decimal writeOffValue, decimal moneyBalanse)
     {
