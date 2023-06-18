@@ -14,7 +14,18 @@ static class Program
     {
         // Создание экземпляров потоков
         Task write_1 = new Task(() => TripSet(TransportCard1, ""));
-        Task write_2 = new Task(() => TripSet(TransportCard2, ""));
+        Task write_2 = new Task(() =>
+        {
+            try
+            {
+                TripSet(TransportCard2, "");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        });
+        
         Task read_1 = new Task(() => PrintHistory(""));
         Task read_2 = new Task(() => PrintHistory(""));
 
@@ -130,7 +141,8 @@ static class Program
             if (transport != null)
             {
                 queue.Enqueue(transport);
-                Console.WriteLine($"{item} Транспортное средство для {cardName}: {transport.GetType().Name}, № - {transport.ID}");
+                Console.WriteLine(
+                    $"{item} Транспортное средство для {cardName}: {transport.GetType().Name}, № - {transport.ID}");
             }
         }
 

@@ -113,8 +113,7 @@ public  partial class Card
     {
         if (MoneyBalance < _minBalance)
         {
-            throw new InsufficientBalanceException(
-                "--->>>Достигнут минимальный баланс на карте. Дальнейшее списание невозможно!");
+            throw new InsufficientBalanceException("--->>>Достигнут минимальный баланс на карте. Дальнейшее списание невозможно!");
         }
 
         if (MoneyBalance > _maxBalance)
