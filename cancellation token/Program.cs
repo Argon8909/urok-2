@@ -1,20 +1,29 @@
-﻿using cancellation_token;
-using System;
-using System.Collections.Generic;
-using System.Threading;
+﻿namespace cancellation_token;
 
 static class Program
 {
-    static readonly Card TransportCard1 = new(10, 5000, "Card_1");
-    static readonly Card TransportCard2 = new(5, 2500, "Card_2");
+    static readonly Card TransportCard1 = new(10, 50, "Card_1");
+    static readonly Card TransportCard2 = new(5, 250, "Card_2");
     public static List<Dictionary<string, decimal>> HistoryAllCard = new();
     private static object _lockObject = new object();
 
     public static void Main()
     {
         // Создание экземпляров потоков
-        Task write_1 = new Task(() => TripSet(TransportCard1, ""));
-        Task write_2 = new Task(() =>
+        Task write1 = new Task(() =>
+        {
+            try
+            {
+                TripSet(TransportCard1, "");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Обработка исключения по карте №-1");
+                Console.WriteLine(e);
+            }
+        });
+           
+        Task write2 = new Task(() =>
         {
             try
             {
@@ -22,21 +31,22 @@ static class Program
             }
             catch (Exception e)
             {
+                Console.WriteLine("Обработка исключения по карте №-2");
                 Console.WriteLine(e);
             }
         });
         
-        Task read_1 = new Task(() => PrintHistory(""));
-        Task read_2 = new Task(() => PrintHistory(""));
+        Task read1 = new Task(() => PrintHistory(""));
+        Task read2 = new Task(() => PrintHistory(""));
 
         SubscriptionEvent(TransportCard1);
         SubscriptionEvent(TransportCard2);
 
-        write_1.Start();
-        write_2.Start();
+        write1.Start();
+        write2.Start();
         Thread.Sleep(3000);
-        read_1.Start();
-        read_2.Start();
+        read1.Start();
+        read2.Start();
 
         TransportCard1.PrintPaymentsHistory();
         TransportCard2.PrintPaymentsHistory();
@@ -133,8 +143,6 @@ static class Program
                     break;
                 case 5:
                     transport = new Trolleybus();
-                    break;
-                default:
                     break;
             }
 
