@@ -6,9 +6,14 @@ static class Program
     static readonly Card TransportCard2 = new(5, 250, "Card_2");
     public static List<Dictionary<string, decimal>> HistoryAllCard = new();
     private static object _lockObject = new object();
+    private static CancellationTokenSource _cts = new CancellationTokenSource();
 
     public static void Main()
     {
+        CancellationToken token = _cts.Token;
+
+        Task readKeyBoard = new Task(CancellationOfOperations);
+
         // Создание экземпляров потоков
         Task write1 = new Task(() =>
         {
@@ -22,7 +27,7 @@ static class Program
                 Console.WriteLine(e);
             }
         });
-           
+
         Task write2 = new Task(() =>
         {
             try
@@ -35,7 +40,7 @@ static class Program
                 Console.WriteLine(e);
             }
         });
-        
+
         Task read1 = new Task(() => PrintHistory(""));
         Task read2 = new Task(() => PrintHistory(""));
 
@@ -53,6 +58,28 @@ static class Program
 
         UnsubscribeEvent(TransportCard1);
         UnsubscribeEvent(TransportCard2);
+    }
+
+    static void CancellationOfOperations()
+    {
+        OnStopWordOperation += StopWordHandler;
+
+        while (true)
+        {
+            var stopWord = Console.ReadLine();
+            if (stopWord != null) OnStopWordOperation?.Invoke(stopWord);
+        }
+
+        OnStopWordOperation -= StopWordHandler;
+    }
+
+    static void StopWordHandler(string stopWord)
+    {
+        switch (stopWord)
+        {
+          case "stop all": 
+              
+        }
     }
 
     static void TripSet(Card card, string item)
@@ -157,4 +184,11 @@ static class Program
         Console.WriteLine("");
         return queue;
     }
+
+    public delegate void StopWordOperation(string stopWord);
+
+    /// <summary>
+    /// Событие иввода стоп-слова.
+    /// </summary>
+    public static event StopWordOperation? OnStopWordOperation;
 }

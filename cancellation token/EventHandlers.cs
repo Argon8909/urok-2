@@ -1,4 +1,5 @@
-﻿namespace cancellation_token;
+﻿
+namespace cancellation_token;
 
 public static class EventHandlers
 {
