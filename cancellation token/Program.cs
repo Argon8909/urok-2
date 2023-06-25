@@ -49,7 +49,7 @@ static class Program
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    Console.WriteLine("Процесс чтения команд остановлен");
+                    Console.WriteLine("Процесс ввода команд остановлен!");
                     break;
                 }
 
@@ -104,7 +104,7 @@ static class Program
             }
         }, cancellationToken2);
 
-        Thread.Sleep(30000);
+        Thread.Sleep(8000);
 
         Task read1 = Task.Run(() => PrintHistory(cancellationToken1, ""), cancellationToken1);
         Task read2 = Task.Run(() => PrintHistory(cancellationToken2, ""), cancellationToken2);
@@ -114,7 +114,7 @@ static class Program
 
         //write1.Start();
         //write2.Start();
-        //Thread.Sleep(30000);
+        //Thread.Sleep(3000);
         //read1.Start();
         //read2.Start();
 
@@ -156,7 +156,7 @@ static class Program
             return;
         }
 
-        card.RouteToTheOffice = CreatingRoute(card.RouteToTheOffice, cancellationToken, item, card.CardName);
+        card.RouteToTheOffice = CreatingRoute(card.RouteToTheOffice, cancellationToken, item, card.CardName) ?? throw new InvalidOperationException();
         card.Replenishment(new Random().Next(1, 300));
         Trip(card, cancellationToken, item);
     }
