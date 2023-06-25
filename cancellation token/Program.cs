@@ -10,28 +10,18 @@ static class Program
 
     private static object _lockObject = new object();
 
-/*
-    private static CancellationTokenSource _cts = new CancellationTokenSource();
-    private static CancellationToken _cancellationToken = _cts.Token;
-    
-    private static CancellationTokenSource _cts1 = new CancellationTokenSource();
-    private static CancellationToken _token1 = _cts1.Token;
-    
-    private static CancellationTokenSource _cts2 = new CancellationTokenSource();
-    private static CancellationToken _token2 = _cts2.Token;
-*/
     // Создание общего токена отмены
     static CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-    static CancellationToken cancellationToken = cancellationTokenSource.Token;
+    static CancellationToken _cancellationToken = cancellationTokenSource.Token;
 
 // Создание отдельных токенов отмены для каждой задачи
     static CancellationTokenSource cancellationTokenSource1 =
-        CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        CancellationTokenSource.CreateLinkedTokenSource(_cancellationToken);
 
     static CancellationToken cancellationToken1 = cancellationTokenSource1.Token;
 
     static CancellationTokenSource cancellationTokenSource2 =
-        CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        CancellationTokenSource.CreateLinkedTokenSource(_cancellationToken);
 
     static CancellationToken cancellationToken2 = cancellationTokenSource2.Token;
 
@@ -40,14 +30,14 @@ static class Program
     {
         SubscriptionEvent(TransportCard1);
         SubscriptionEvent(TransportCard2);
-        
+
         Task readKeyBoard = Task.Run(() =>
         {
             OnStopWordOperation += StopWordHandler;
 
             while (true)
             {
-                if (cancellationToken.IsCancellationRequested)
+                if (_cancellationToken.IsCancellationRequested)
                 {
                     Console.WriteLine("Процесс ввода команд остановлен!");
                     break;
@@ -59,24 +49,17 @@ static class Program
             }
 
             OnStopWordOperation -= StopWordHandler;
-        }, cancellationToken);
+        }, _cancellationToken);
 
         Thread.Sleep(8000);
 
         // Создание экземпляров потоков
         Task write1 = Task.Run(() =>
         {
-            //cancellationToken1.ThrowIfCancellationRequested();
-
             try
             {
                 TripSet(TransportCard1, cancellationToken1, "");
             }
-            // catch (OperationCanceledException)
-            // {
-            // Обработка отмены задачи 
-            // Console.WriteLine("Задача 1 отменена.");
-            // }
             catch (Exception e)
             {
                 Console.WriteLine("Обработка исключения по карте №-1");
@@ -86,17 +69,10 @@ static class Program
 
         Task write2 = Task.Run(() =>
         {
-            //cancellationToken2.ThrowIfCancellationRequested();
-
             try
             {
                 TripSet(TransportCard2, cancellationToken2, "");
             }
-            //catch (OperationCanceledException)
-            //{
-            // Обработка отмены задачи 
-            //  Console.WriteLine("Задача 2 отменена.");
-            //}
             catch (Exception e)
             {
                 Console.WriteLine("Обработка исключения по карте №-2");
@@ -104,19 +80,12 @@ static class Program
             }
         }, cancellationToken2);
 
-        Thread.Sleep(8000);
+        Thread.Sleep(30000);
 
         Task read1 = Task.Run(() => PrintHistory(cancellationToken1, ""), cancellationToken1);
         Task read2 = Task.Run(() => PrintHistory(cancellationToken2, ""), cancellationToken2);
 
-        //SubscriptionEvent(TransportCard1);
-        //SubscriptionEvent(TransportCard2);
-
-        //write1.Start();
-        //write2.Start();
-        //Thread.Sleep(3000);
-        //read1.Start();
-        //read2.Start();
+        Thread.Sleep(3000);
 
         TransportCard1.PrintPaymentsHistory();
         TransportCard2.PrintPaymentsHistory();
@@ -144,33 +113,42 @@ static class Program
 
     static void TripSet(Card card, CancellationToken cancellationToken, string item)
     {
+        // Получаем информацию о текущем методе
+        MethodBase? currentMethod = MethodBase.GetCurrentMethod();
+
+        // Получаем имя текущего метода
+        string methodName = currentMethod.Name;
+
+        Console.WriteLine($"Выполнение метода {methodName} начато!");
+
+        Thread.Sleep(5000);
+
         if (cancellationToken.IsCancellationRequested)
         {
-            // Получаем информацию о текущем методе
-            MethodBase? currentMethod = MethodBase.GetCurrentMethod();
-
-            // Получаем имя текущего метода
-            string methodName = currentMethod.Name;
-
             Console.WriteLine($"Выполнение метода {methodName} остановлено!"); // Операция была отменена
             return;
         }
 
-        card.RouteToTheOffice = CreatingRoute(card.RouteToTheOffice, cancellationToken, item, card.CardName) ?? throw new InvalidOperationException();
+        card.RouteToTheOffice = CreatingRoute(card.RouteToTheOffice, cancellationToken, item, card.CardName) ??
+                                throw new InvalidOperationException();
         card.Replenishment(new Random().Next(1, 300));
         Trip(card, cancellationToken, item);
     }
 
     static void PrintHistory(CancellationToken cancellationToken, string item)
     {
+        // Получаем информацию о текущем методе
+        MethodBase? currentMethod = MethodBase.GetCurrentMethod();
+
+        // Получаем имя текущего метода
+        string methodName = currentMethod.Name;
+
+        Console.WriteLine($"Выполнение метода {methodName} начато!");
+
+       // Thread.Sleep(5000);
+
         if (cancellationToken.IsCancellationRequested)
         {
-            // Получаем информацию о текущем методе
-            MethodBase? currentMethod = MethodBase.GetCurrentMethod();
-
-            // Получаем имя текущего метода
-            string methodName = currentMethod.Name;
-
             Console.WriteLine($"Выполнение метода {methodName} остановлено!"); // Операция была отменена
             return;
         }
@@ -186,14 +164,18 @@ static class Program
 
     static void Trip(Card card, CancellationToken cancellationToken, string item)
     {
+        // Получаем информацию о текущем методе
+        MethodBase? currentMethod = MethodBase.GetCurrentMethod();
+
+        // Получаем имя текущего метода
+        string methodName = currentMethod.Name;
+
+        Console.WriteLine($"Выполнение метода {methodName} начато!");
+
+        Thread.Sleep(5000);
+
         if (cancellationToken.IsCancellationRequested)
         {
-            // Получаем информацию о текущем методе
-            MethodBase? currentMethod = MethodBase.GetCurrentMethod();
-
-            // Получаем имя текущего метода
-            string methodName = currentMethod.Name;
-
             Console.WriteLine($"Выполнение метода {methodName} остановлено!"); // Операция была отменена
             return;
         }
@@ -243,14 +225,18 @@ static class Program
     static Queue<PublicTransport>? CreatingRoute(Queue<PublicTransport> queue, CancellationToken cancellationToken,
         string item, string cardName)
     {
+        // Получаем информацию о текущем методе
+        MethodBase? currentMethod = MethodBase.GetCurrentMethod();
+
+        // Получаем имя текущего метода
+        string methodName = currentMethod.Name;
+
+        Console.WriteLine($"Выполнение метода {methodName} начато!");
+
+        Thread.Sleep(5000);
+
         if (cancellationToken.IsCancellationRequested)
         {
-            // Получаем информацию о текущем методе
-            MethodBase? currentMethod = MethodBase.GetCurrentMethod();
-
-            // Получаем имя текущего метода
-            string methodName = currentMethod.Name;
-
             Console.WriteLine($"Выполнение метода {methodName} остановлено!"); // Операция была отменена
             return null;
         }
