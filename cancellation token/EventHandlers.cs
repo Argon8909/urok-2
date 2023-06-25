@@ -1,5 +1,4 @@
-﻿
-namespace cancellation_token;
+﻿namespace cancellation_token;
 
 public static class EventHandlers
 {
@@ -42,7 +41,8 @@ public List<decimal> History { get; set; } - список со всеми тра
  */
     private static object historyLock = new object();
 
-    public static void OnHistoryOperationHandler(decimal moneyDelta, decimal moneyBalance, string cardName, bool errorOperation)
+    public static void OnHistoryOperationHandler(decimal moneyDelta, decimal moneyBalance, string cardName,
+        bool errorOperation)
     {
         Dictionary<string, decimal> history = new();
 
