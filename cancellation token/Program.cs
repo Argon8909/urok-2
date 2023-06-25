@@ -227,7 +227,7 @@ static class Program
     {
         // Получаем информацию о текущем методе
         MethodBase? currentMethod = MethodBase.GetCurrentMethod();
-
+      
         // Получаем имя текущего метода
         string methodName = currentMethod.Name;
 
@@ -289,98 +289,5 @@ static class Program
 }
 
 /*
- Task write1 = new Task(() =>
-        {
-            cancellationToken1.ThrowIfCancellationRequested();
-
-            try
-            {
-                TripSet(TransportCard1, cancellationToken1, "");
-            }
-            catch (OperationCanceledException)
-            {
-                // Обработка отмены задачи 
-                Console.WriteLine("Задача 1 отменена.");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Обработка исключения по карте №-1");
-                Console.WriteLine(e);
-            }
-        }, cancellationToken1);
-
-        Task write2 = new Task(() =>
-        {
-            cancellationToken2.ThrowIfCancellationRequested();
-
-            try
-            {
-                TripSet(TransportCard2, cancellationToken2, "");
-            }
-            catch (OperationCanceledException)
-            {
-                // Обработка отмены задачи 
-                Console.WriteLine("Задача 2 отменена.");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Обработка исключения по карте №-2");
-                Console.WriteLine(e);
-            }
-        }, cancellationToken2);
  
- Task write1 = new Task(() =>
-        {
-            _cancellationToken.ThrowIfCancellationRequested();
-
-            try
-            {
-                TripSet(TransportCard1, _cancellationToken, "");
-            }
-            catch (OperationCanceledException)
-            {
-                // Обработка отмены задачи 
-                Console.WriteLine("Задача 1 отменена.");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Обработка исключения по карте №-1");
-                Console.WriteLine(e);
-            }
-        }, _cancellationToken);
-
-
-        Task write2 = new Task(() =>
-        {
-            _cancellationToken.ThrowIfCancellationRequested();
-
-            try
-            {
-                TripSet(TransportCard2, _cancellationToken, "");
-            }
-            catch (OperationCanceledException)
-            {
-                // Обработка отмены задачи 
-                Console.WriteLine("Задача 2 отменена.");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Обработка исключения по карте №-2");
-                Console.WriteLine(e);
-            }
-        }, _cancellationToken);
- 
- 
- *  Task write2 = new Task(() =>
-        {
-            try
-            {
-                TripSet(TransportCard2, _cancellationToken, "");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Обработка исключения по карте №-2");
-                Console.WriteLine(e);
-            }
-        }, _cancellationToken);
 */
