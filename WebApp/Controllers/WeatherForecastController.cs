@@ -30,10 +30,10 @@ public class WeatherForecastController : ControllerBase
         return weatherForecast;
     }
 
-    [HttpGet]
-    [Route("GetText")]
-    public string Get2()
+    [HttpPost]
+    [Route("PostText")]
+    public string Post(string text)
     {
-        return "text.ToUpper()";
+        return text.ToUpper();
     }
 }
