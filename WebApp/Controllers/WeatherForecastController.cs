@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers;
 
-[ApiController]
-[Route("api/")]
+//[ApiController]
+//[Route("api/")]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]
@@ -16,8 +16,8 @@ public class WeatherForecastController : ControllerBase
     {
     }
 
-    [HttpGet]
-    [Route("GetWeatherForecast")]
+   // [HttpGet]
+   // [Route("GetWeatherForecast")]
     public IEnumerable<WeatherForecast> Get()
     {
         var weatherForecast = Enumerable.Range(1, 5).Select(index => new WeatherForecast
@@ -30,8 +30,8 @@ public class WeatherForecastController : ControllerBase
         return weatherForecast;
     }
 
-    [HttpPost]
-    [Route("PostText")]
+   // [HttpPost]
+   // [Route("PostText")]
     public string Post(string text)
     {
         return text.ToUpper();
