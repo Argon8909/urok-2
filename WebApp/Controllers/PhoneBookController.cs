@@ -1,27 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text;
+
 namespace WebApp.Controllers;
 
 [ApiController]
 [Route("api/[Controller]")]
 public class PhoneBook : Controller
 {
-    private List<PhoneRecord> _book = new List<PhoneRecord>();
+    public PhoneBook()
+    {
+        Console.WriteLine("Вызов конструктора");
+    }
+
+    private static List<PhoneRecord> _book = new List<PhoneRecord>();
 
 
     [HttpGet]
     [Route("GetPhoneBook")]
     public string GetAll()
     {
-        StringBuilder sb = new StringBuilder("Запись: ");
-        // var str = _book
-           // .Select(x => x.Name).ToString();
-           foreach (var record in _book)
-           {
-               sb.Append(record.Name + record.Number + record.Adress + "\n");
-           }
+        // StringBuilder sb = new StringBuilder($"Всего записей {_book.Count} ");
+        var str = _book
+            .Select(x => x.Name + " " + x.Number + " " + x.Adress);
+        var result = string.Join("\n", str);
 
-        return sb.ToString();
+        Console.WriteLine(result);
+        return result;
     }
 
     [HttpPost]
@@ -30,7 +34,7 @@ public class PhoneBook : Controller
     {
         PhoneRecord record = new PhoneRecord(name, number, adress);
         _book.Add(record);
-        return name + " is record";
+        return name + " is record" + $"  Всего записей {_book.Count} ";
     }
 
     [HttpDelete]
@@ -41,14 +45,28 @@ public class PhoneBook : Controller
 
         for (int i = 0; i < _book.Count; i++)
         {
-            if (_book[i].Name == name)
+            if (_book[i].Name == name.Trim())
             {
                 _book.Remove(_book[i]);
+                Console.WriteLine(name + " is delete");
+                return name + " is delete";
             }
-
-            return name + " Delete";
         }
 
         return "Not Found :-(";
+    }
+
+    [HttpPatch]
+    [Route("PatchPhoneBook")]
+    public string PatchContact()
+    {
+        return "";
+    }
+
+    [HttpPut]
+    [Route("PutPhoneBook")]
+    public string PutContact()
+    {
+        return "";
     }
 }
