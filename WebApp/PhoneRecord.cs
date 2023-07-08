@@ -2,9 +2,9 @@
 
 public class PhoneRecord
 {
-    public readonly string Name;
-    public readonly string Number;
-    public readonly string? Adress;
+    public  string Name;
+    public  string Number;
+    public  string? Adress;
 
     public PhoneRecord(string name, string number, string? adress = null)
     {
