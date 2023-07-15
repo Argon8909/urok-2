@@ -47,9 +47,8 @@ class Program
         queryStringPut.Add("newName", "Mike");
         queryStringPut.Add("newNumber", "9876543210");
         queryStringPut.Add("newAdress", "123 Main St");
-        
+
         var putResponse = await httpClient.PutAsync($"{baseAddress}/PutPhoneBook?{queryStringPut}", null);
-        //var putResponse = await httpClient.PutAsync($"{baseAddress}/PutPhoneBook", putContent);
         var putResult = await putResponse.Content.ReadAsStringAsync();
         Console.WriteLine("Put>>> " + putResult);
         Console.WriteLine(putResponse.RequestMessage.RequestUri.AbsoluteUri);
