@@ -7,6 +7,13 @@ class Program
 {
     static async Task Main()
     {
+        
+        
+        
+        
+        
+        
+        
         var httpClientHandler = new HttpClientHandler();
         httpClientHandler.ServerCertificateCustomValidationCallback = (message, certificate2, arg3, arg4) => true;
 
