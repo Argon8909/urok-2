@@ -26,7 +26,7 @@ public static class DataBaseHandler
         {
             var columsCount = reader.FieldCount;
             
-            var vue = reader.GetString(column);
+           // var vue = reader.GetString(column);
         }
 
         return result;
