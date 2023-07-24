@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-namespace ConsoleApp_DB;
 
-public class ApplicationDBbContext : DbContext
+namespace WebApp;
+
+public class ApplicationDbContext : DbContext
 {
     private readonly string _connectionString =  "Host=localhost;Username=postgres;Password=123;Database=postgres";
     
