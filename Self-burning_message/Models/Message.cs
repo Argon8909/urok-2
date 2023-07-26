@@ -2,10 +2,10 @@
 
 public class Message
 {
-    public int Id { get; set; }
-    public string Content { get; set; }
+    public int id { get; set; }
+    public string content { get; set; }
     
-    public DateTime ExpirationDate { get; set; }
-    public bool IsRead { get; set; }
-    public string UniqueLink { get; set; }
+    public DateTime expirationdate { get; set; }
+    public bool isread { get; set; }
+    public string uniquelink { get; set; }
 }

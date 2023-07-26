@@ -15,16 +15,38 @@ public class MessageController : ControllerBase
     public IActionResult CreateMessage(Message message)
     {
         // Генерируем уникальную ссылку для сообщения
-        message.UniqueLink = Guid.NewGuid().ToString();
-        message.IsRead = false;
+        message.uniquelink = Guid.NewGuid().ToString();
+        message.isread = false;
 
         // Добавляем сообщение в список
         Messages.Add(message);
-        Console.WriteLine("Сообщение: " + message.Content);
-        Console.WriteLine("Линк: " + message.UniqueLink);
+        Console.WriteLine("Сообщение: " + message.content);
+        Console.WriteLine("Линк: " + message.uniquelink);
         Console.WriteLine("Всего сообщений " + Messages.Count);
         // Возвращаем уникальную ссылку
-        return Ok(message.UniqueLink);
+        return Ok(message.uniquelink);
+    }
+
+    [HttpPost]
+    [Route("CreateMessageToDb")]
+    public IActionResult CreateMessageToDb(Message message)
+    {
+        // Генерируем уникальную ссылку для сообщения
+        message.uniquelink = Guid.NewGuid().ToString();
+        message.isread = false;
+
+        // Добавляем сообщение в список
+        Messages.Add(message);
+
+        using ApplicationDbContext dbContext = new();
+        dbContext.messages.Add(message);
+        dbContext.SaveChanges();
+
+        Console.WriteLine("Сообщение: " + message.content);
+        Console.WriteLine("Линк: " + message.uniquelink);
+        Console.WriteLine("Всего сообщений " + Messages.Count);
+        // Возвращаем уникальную ссылку
+        return Ok(message.uniquelink);
     }
 
 
@@ -33,7 +55,7 @@ public class MessageController : ControllerBase
     public IActionResult GetMessage(string link)
     {
         // Находим сообщение по уникальной ссылке
-        var message = Messages.FirstOrDefault(m => m.UniqueLink == link);
+        var message = Messages.FirstOrDefault(m => m.uniquelink == link);
 
         if (message == null)
         {
@@ -41,18 +63,51 @@ public class MessageController : ControllerBase
         }
 
         // Если сообщение не прочитано, отмечаем его как прочитанное
-        if (!message.IsRead)
+        if (!message.isread)
         {
-            message.IsRead = true;
+            message.isread = true;
         }
 
-        Console.WriteLine("Сообщение выдано: " + message.Content);
-        //Console.WriteLine("Линк: " + message.UniqueLink);
-        
+        Console.WriteLine("Сообщение выдано: " + message.content);
+        //Console.WriteLine("Линк: " + message.uniquelink);
+
         // Удаляем сообщение из списка (самоуничтожение)
         Messages.Remove(message);
         Console.WriteLine("Всего сообщений " + Messages.Count);
         // Возвращаем содержимое сообщения
-        return Ok(message.Content);
+        return Ok(message.content);
+    }
+
+    [HttpGet]
+    [Route("GetMessageFromDb")]
+    public IActionResult GetMessageFromDb(string link)
+    {
+        // Находим сообщение по уникальной ссылке
+        //var message = Messages.FirstOrDefault(m => m.uniquelink == link);
+
+        using ApplicationDbContext dbContext = new();
+        var messageFromDb = dbContext.messages.FirstOrDefault(x => x.uniquelink == link);
+
+        if (messageFromDb == null)
+        {
+            return NotFound();
+        }
+
+        // Если сообщение не прочитано, отмечаем его как прочитанное
+        if (!messageFromDb.isread)
+        {
+            messageFromDb.isread = true;
+        }
+
+        Console.WriteLine("Сообщение выдано: " + messageFromDb.content);
+
+        // Удаляем сообщение из списка (самоуничтожение)
+        // Messages.Remove(messageFromDb);
+        dbContext.Remove(messageFromDb);
+        dbContext.SaveChanges();
+
+        Console.WriteLine("Всего сообщений " + Messages.Count);
+        // Возвращаем содержимое сообщения
+        return Ok(messageFromDb.content);
     }
 }

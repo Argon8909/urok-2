@@ -12,7 +12,7 @@ public class ApplicationDbContext : DbContext
         optionsBuilder.UseNpgsql(_connectionString);
     }
 
-    public DbSet<Message> Messages  { get; set; }
+    public DbSet<Message> messages  { get; set; }
    
     //видео 1 : 00
 }
