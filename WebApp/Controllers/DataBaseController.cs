@@ -73,9 +73,17 @@ public class DataBaseController : Controller
             phonenumber = phoneNumber.Trim()
         };
 
-        using ApplicationDbContext dbContext = new();
-        dbContext.people.Add(persona);
-        dbContext.SaveChanges();
+        try
+        {
+            using ApplicationDbContext dbContext = new();
+            dbContext.people.Add(persona);
+            dbContext.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "Ошибка базы данных: " + ex.Message);
+        }
+
 
         return Ok();
     }
@@ -88,7 +96,8 @@ public class DataBaseController : Controller
         using ApplicationDbContext dbContext = new();
 
         var persona = dbContext.people.FirstOrDefault(x => x.id == selectId);
-        if (persona == null) return NotFound();
+
+        if (persona == null) return NotFound("Объект с таким ID не найден!");
 
         if (newFirstName != null) persona.firstname = newFirstName.Trim();
         if (newCity != null) persona.city = newCity.Trim();
@@ -96,8 +105,16 @@ public class DataBaseController : Controller
         if (newHouseNumber != null) persona.housenumber = newHouseNumber.Trim();
         if (newPhoneNumber != null) persona.phonenumber = newPhoneNumber.Trim();
 
-        dbContext.people.Update(persona);
-        dbContext.SaveChanges();
+        try
+        {
+            dbContext.people.Update(persona);
+            dbContext.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "Ошибка базы данных: " + ex.Message);
+        }
+
 
         return Ok(persona);
     }
@@ -107,16 +124,23 @@ public class DataBaseController : Controller
     public IActionResult DeletePeople(int selectId)
     {
         using ApplicationDbContext dbContext = new();
-
-        var persona = dbContext.people.FirstOrDefault(x => x.id == selectId);
-        if (persona != null)
+        
+        try
         {
-            dbContext.people.Remove(persona);
-            dbContext.SaveChanges();
-            return Ok();
+            var persona = dbContext.people.FirstOrDefault(x => x.id == selectId);
+            if (persona != null)
+            {
+                dbContext.people.Remove(persona);
+                dbContext.SaveChanges();
+                return Ok();
+            }
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "Ошибка базы данных: " + ex.Message);
         }
 
-        return NotFound();
+        return NotFound("Объект с таким ID не найден!");
     }
 }
 
