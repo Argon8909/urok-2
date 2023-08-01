@@ -77,9 +77,7 @@ public class MessageController : ControllerBase
 
         // Добавляем сообщение в список
         Messages.Add(message);
-        Console.WriteLine("Сообщение: " + message.content);
-        Console.WriteLine("Линк: " + message.uniquelink);
-        Console.WriteLine("Всего сообщений " + Messages.Count);
+        
         // Возвращаем уникальную ссылку
         return Ok(message.uniquelink);
     }
