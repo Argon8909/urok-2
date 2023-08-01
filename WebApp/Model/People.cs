@@ -3,10 +3,10 @@
 public class People
 {
     // Id SERIAL PRIMARY KEY,
-    public string LastName { get; set; }
-    public string FirstName { get; set; }
-    public string PhoneNumber { get; set; }
-    public string City { get; set; }
-    public string Street { get; set; }
-    public string HouseNumber { get; set; }
+    public string lastname { get; set; }
+    public string firstname { get; set; }
+    public string phonenumber { get; set; }
+    public string city { get; set; }
+    public string street { get; set; }
+    public string housenumber { get; set; }
 }

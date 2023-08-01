@@ -7,26 +7,7 @@ namespace WebApp.Controllers;
 [Route("api/[Controller]")]
 public class DataBaseController : Controller
 {
-    [HttpGet]
-    [Route("GetAllPhoneBook")]
-    public string GetAll()
-    {
-        using ApplicationDbContext dbContext = new();
-
-        var phoneBooks = dbContext.PhoneBook
-            //.AsNoTracking()
-            .ToList();
-
-        var booksDescription = phoneBooks
-            .Select(x => x
-                .Name + " " + x
-                .Number + " " + x
-                .Adress);
-
-        var result = string.Join("\n", booksDescription);
-        
-        return result;
-    }
+    
     
     [HttpGet]
     [Route("GetAllPeople")]
@@ -34,15 +15,15 @@ public class DataBaseController : Controller
     {
         using ApplicationDbContext dbContext = new();
 
-        var peoples = dbContext.People
+        var peoples = dbContext.people
             //.AsNoTracking()
             .ToList();
 
         var peoplesDescription = peoples
             .Select(x => x
-                .FirstName + " " + x
-                .LastName + " " + x
-                .City);
+                .firstname + " " + x
+                .lastname + " " + x
+                .city);
 
         var result = string.Join("\n", peoplesDescription);
         

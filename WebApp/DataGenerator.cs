@@ -212,7 +212,7 @@ public class DataGenerator
 
     public static string GenerateRandomPhoneNumber()
     {
-        return string.Format("{+7:###-###-####}", Random.Next(1000000000, 10000000000));
+        return string.Format("{+7:###-###-####}", Random.Next(1000000000, 1000000000));
     }
 
     public static string GenerateRandomCity()

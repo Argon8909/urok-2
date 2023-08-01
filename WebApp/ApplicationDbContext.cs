@@ -12,7 +12,7 @@ public class ApplicationDbContext : DbContext
         optionsBuilder.UseNpgsql(_connectionString);
     }
 
-    public DbSet<Model.People> People  { get; set; }
+    public DbSet<Model.People> people  { get; set; }
     public DbSet<Model.PhoneBook> PhoneBook { get; set; }
 
     //видео 1 : 00
