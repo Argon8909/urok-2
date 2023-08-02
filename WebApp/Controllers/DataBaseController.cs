@@ -19,7 +19,7 @@ public class DataBaseController : Controller
             var queryId = dbContext.people
                 .Where(x => x
                     .id == id);
-            
+
             var peoplesId = queryId.ToList();
             var foundPeopleCountId = peoplesId.Count;
 
@@ -38,44 +38,39 @@ public class DataBaseController : Controller
             return Ok($"Найдено {foundPeopleCountId} человек. " + "\n" + resultId);
         }
 
-        if (string.IsNullOrEmpty(firstname)) return BadRequest("Вы должны указать имя!");
+        if (string.IsNullOrEmpty(firstname) && string.IsNullOrEmpty(lastName) && string.IsNullOrEmpty(city))
+            return BadRequest("Вы должны указать данные для поиска!");
 
-        var query = dbContext.people
+        var query = dbContext.people.AsQueryable();
+/*
+        var query = dbContext
+            .people
+            .AsNoTracking()
             .Where(x => x
-                .firstname
-                .Trim()
-                .ToLower() == firstname
-                .Trim()
-                .ToLower());
+                .firstname.Trim().ToLower() == firstname.Trim().ToLower());
+*/
+
+        if (!string.IsNullOrEmpty(firstname))
+        {
+            query = query
+                .Where(x => x
+                    .firstname.Trim().ToLower() == firstname.Trim().ToLower());
+        }
 
         if (!string.IsNullOrEmpty(lastName))
         {
             query = query
                 .Where(x => x
-                    .lastname
-                    .Trim()
-                    .ToLower() == lastName
-                    .Trim()
-                    .ToLower());
+                    .lastname.Trim().ToLower() == lastName.Trim().ToLower());
         }
 
         if (!string.IsNullOrEmpty(city))
         {
             query = query
                 .Where(x => x
-                    .city
-                    .Trim()
-                    .ToLower() == city
-                    .Trim()
-                    .ToLower());
+                    .city.Trim().ToLower() == city.Trim().ToLower());
         }
 
-        if (id != null)
-        {
-            query = query
-                .Where(x => x
-                    .id == id);
-        }
 
         var peoples = query.ToList();
         var foundPeopleCount = peoples.Count;
@@ -224,6 +219,15 @@ public class DataBaseController : Controller
 
 
 /*
+  var query = dbContext.people
+            .Where(x => x
+                .firstname
+                .Trim()
+                .ToLower() == firstname
+                .Trim()
+                .ToLower());
+ 
+ 
  // [HttpGet]
    // [Route("GetAllPeople")]
     public IActionResult GetAllPeople()
