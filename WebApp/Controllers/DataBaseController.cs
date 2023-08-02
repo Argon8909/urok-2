@@ -8,16 +8,38 @@ namespace WebApp.Controllers;
 [Route("api/[Controller]")]
 public class DataBaseController : Controller
 {
-   
-
     [HttpGet]
     [Route("SelectPeople")]
-    public IActionResult SelectPeople(string? firstname, string? lastName, string? city)
+    public IActionResult SelectPeople(string? firstname, string? lastName, string? city, int? id)
     {
         using ApplicationDbContext dbContext = new ApplicationDbContext();
-       // var query = dbContext.people.Find();
-       if (string.IsNullOrEmpty(firstname)) return BadRequest("Вы должны указать имя!");
-        
+
+        if (id != null)
+        {
+            var queryId = dbContext.people
+                .Where(x => x
+                    .id == id);
+            
+            var peoplesId = queryId.ToList();
+            var foundPeopleCountId = peoplesId.Count;
+
+            var peoplesDescriptionId = peoplesId.Select(x =>
+                $"{x.id}\n" +
+                $"Last Name: {x.lastname}\n" +
+                $"First Name: {x.firstname}\n" +
+                $"Phone Number: {x.phonenumber}\n" +
+                $"City: {x.city}\n" +
+                $"Street: {x.street}\n" +
+                $"House Number: {x.housenumber}\n"
+            );
+
+            var resultId = string.Join("\n", peoplesDescriptionId);
+
+            return Ok($"Найдено {foundPeopleCountId} человек. " + "\n" + resultId);
+        }
+
+        if (string.IsNullOrEmpty(firstname)) return BadRequest("Вы должны указать имя!");
+
         var query = dbContext.people
             .Where(x => x
                 .firstname
@@ -48,9 +70,16 @@ public class DataBaseController : Controller
                     .ToLower());
         }
 
+        if (id != null)
+        {
+            query = query
+                .Where(x => x
+                    .id == id);
+        }
+
         var peoples = query.ToList();
-        var foundPeopleCount  = peoples.Count;
-        
+        var foundPeopleCount = peoples.Count;
+
         var peoplesDescription = peoples.Select(x =>
             $"{x.id}\n" +
             $"Last Name: {x.lastname}\n" +
