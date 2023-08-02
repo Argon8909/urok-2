@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 public class DataGenerator
 {
-    private static readonly Random Random = new Random();
+    private  readonly Random Random = new Random();
 
-    private static readonly List<string> FirstNames = new List<string>
+    private  readonly List<string> FirstNames = new List<string>
     {
         "Александр", "Андрей", "Артем", "Владимир", "Иван", "Дмитрий", "Максим", "Никита", "Сергей", "Егор",
         "Алексей", "Александр", "Михаил", "Кирилл", "Даниил", "Артем", "Илья", "Максим", "Роман", "Владислав",
@@ -20,7 +20,7 @@ public class DataGenerator
     };
 
 
-    private static readonly List<string> LastNames = new List<string>
+    private  readonly List<string> LastNames = new List<string>
     {
         "Иванов", "Петров", "Смирнов", "Соколов", "Михайлов", "Федоров", "Морозов", "Волков", "Ковалев", "Зайцев",
         "Павлов", "Семенов", "Голубев", "Виноградов", "Богданов", "Воробьев", "Федотов", "Михайлов", "Беляев",
@@ -47,7 +47,7 @@ public class DataGenerator
     }
 */
 
-    private static readonly List<string> Cities = new List<string>
+    private  readonly List<string> Cities = new List<string>
     {
         "Москва", "Санкт-Петербург", "Новосибирск", "Екатеринбург", "Нижний Новгород", "Казань", "Самара", "Омск",
         "Челябинск", "Ростов-на-Дону", "Уфа", "Волгоград", "Пермь", "Красноярск", "Воронеж", "Саратов", "Краснодар",
@@ -65,7 +65,7 @@ public class DataGenerator
         "Тамбов", "Владикавказ", "Мурманск", "Подольск", "Сыктывкар", "Нижний Тагил", "Бийск", "Анапа", "Благовещенск",
         "Караганда", "Ош", "Джалал-Абад", "Туркестан", "Тараз", "Бишкек", "Ош", "Баткен", "Коканд", "Маргилан",
         "Ташкент", "Самарканд", "Навои", "Андижан", "Бухара", "Наманган", "Алматы", "Шымкент", "Талдыкорган", "Актау",
-        "Атырау", "Усть-Каменогорск", "Павлодар", "Караганда", "Орал", "Актобе", "Тараз", "Астана", "Петропавловск",
+        "Атырау", "Усть-Каменогорск", "Павлодар", "Караганда", "Киев", "Актобе", "Тараз", "Астана", "Петропавловск",
         "Семей",
         "Актюбинск", "Костанай", "Темиртау", "Туркестан", "Уральск", "Атырау", "Кызылорда", "Риддер", "Талдыкорган",
         "Текели",
@@ -75,7 +75,7 @@ public class DataGenerator
     };
 
 
-    private static readonly List<string> Streets = new List<string>
+    private  readonly List<string> Streets = new List<string>
     {
         "Ленина улица", "Пушкина улица", "Гагарина улица", "Мира улица", "Советская улица", "Школьная улица",
         "Парковая улица", "Молодежная улица",
@@ -200,33 +200,34 @@ public class DataGenerator
         "Садовый переулок"
     };
 
-    public static string GenerateRandomFirstName()
+    public  string GenerateRandomFirstName()
     {
         return FirstNames[Random.Next(FirstNames.Count)];
     }
 
-    public static string GenerateRandomLastName()
+    public  string GenerateRandomLastName()
     {
         return LastNames[Random.Next(LastNames.Count)];
     }
 
-    public static string GenerateRandomPhoneNumber()
+    public string GenerateRandomPhoneNumber()
     {
-        return string.Format("{+7:###-###-####}", Random.Next(1000000000, 1000000000));
+        return string.Format("+7{0:###-###-####}", Random.Next(1000000000, 2000000000));
     }
 
-    public static string GenerateRandomCity()
+
+    public  string GenerateRandomCity()
     {
         return Cities[Random.Next(Cities.Count)];
     }
 
-    public static string GenerateRandomStreet()
+    public  string GenerateRandomStreet()
     {
         return Streets[Random.Next(Streets.Count)];
     }
 
-    public static string GenerateRandomHouseNumber()
+    public  string GenerateRandomHouseNumber()
     {
-        return Random.Next(1, 100).ToString();
+        return Random.Next(1, 999).ToString();
     }
 }

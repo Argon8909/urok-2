@@ -20,10 +20,14 @@ public class DataBaseController : Controller
 
         var peoplesDescription = peoples
             .Select(x => x
-                .id + " " + x
-                .firstname + " " + x
-                .lastname + " " + x
-                .city);
+                    .id + " " + x
+                    .firstname + " " + x
+                    .lastname + " " + x
+                    .city + " " + x
+                    .street + " " + x
+                    .housenumber + " " + x
+                    .phonenumber
+            );
 
         var result = string.Join("\n", peoplesDescription);
 
@@ -36,16 +40,34 @@ public class DataBaseController : Controller
     {
         using ApplicationDbContext dbContext = new ApplicationDbContext();
 
-        var query = dbContext.people.Where(x => x.firstname.Trim().ToLower() == firstname.Trim().ToLower());
+        var query = dbContext.people
+            .Where(x => x
+                .firstname
+                .Trim()
+                .ToLower() == firstname
+                .Trim()
+                .ToLower());
 
         if (!string.IsNullOrEmpty(lastName))
         {
-            query = query.Where(x => x.lastname.Trim().ToLower() == lastName.Trim().ToLower());
+            query = query
+                .Where(x => x
+                    .lastname
+                    .Trim()
+                    .ToLower() == lastName
+                    .Trim()
+                    .ToLower());
         }
 
         if (!string.IsNullOrEmpty(city))
         {
-            query = query.Where(x => x.city.Trim().ToLower() == city.Trim().ToLower());
+            query = query
+                .Where(x => x
+                    .city
+                    .Trim()
+                    .ToLower() == city
+                    .Trim()
+                    .ToLower());
         }
 
         var peoples = query.ToList();
@@ -99,11 +121,12 @@ public class DataBaseController : Controller
 
         if (persona == null) return NotFound("Объект с таким ID не найден!");
 
-        if (newFirstName != null) persona.firstname = newFirstName.Trim();
-        if (newCity != null) persona.city = newCity.Trim();
-        if (newStreet != null) persona.street = newStreet.Trim();
-        if (newHouseNumber != null) persona.housenumber = newHouseNumber.Trim();
-        if (newPhoneNumber != null) persona.phonenumber = newPhoneNumber.Trim();
+        if (!string.IsNullOrEmpty(newFirstName)) persona.firstname = newFirstName.Trim();
+        if (!string.IsNullOrEmpty(newLastName)) persona.lastname = newLastName.Trim();
+        if (!string.IsNullOrEmpty(newCity)) persona.city = newCity.Trim();
+        if (!string.IsNullOrEmpty(newStreet)) persona.street = newStreet.Trim();
+        if (!string.IsNullOrEmpty(newHouseNumber)) persona.housenumber = newHouseNumber.Trim();
+        if (!string.IsNullOrEmpty(newPhoneNumber)) persona.phonenumber = newPhoneNumber.Trim();
 
         try
         {
@@ -124,7 +147,7 @@ public class DataBaseController : Controller
     public IActionResult DeletePeople(int selectId)
     {
         using ApplicationDbContext dbContext = new();
-        
+
         try
         {
             var persona = dbContext.people.FirstOrDefault(x => x.id == selectId);
@@ -132,7 +155,7 @@ public class DataBaseController : Controller
             {
                 dbContext.people.Remove(persona);
                 dbContext.SaveChanges();
-                return Ok();
+                return Ok(persona.id + "Удалён!");
             }
         }
         catch (Exception ex)
@@ -142,9 +165,86 @@ public class DataBaseController : Controller
 
         return NotFound("Объект с таким ID не найден!");
     }
+
+    [HttpPost]
+    [Route("FillingInDb")]
+    public IActionResult FillingInDb(int quantity)
+    {
+        using ApplicationDbContext dbContext = new();
+        DataGenerator dataGenerator = new();
+        var persones = new List<People>();
+    
+        for (int i = 0; i < quantity; i++)
+        {
+            var persona = new People
+            {
+                firstname = dataGenerator.GenerateRandomFirstName(),
+                lastname = dataGenerator.GenerateRandomLastName(),
+                city = dataGenerator.GenerateRandomCity(),
+                street = dataGenerator.GenerateRandomStreet(),
+                housenumber = dataGenerator.GenerateRandomHouseNumber(),
+                phonenumber = dataGenerator.GenerateRandomPhoneNumber()
+            };
+            persones.Add(persona);
+        }
+
+        try
+        {
+            foreach (var persone in persones)
+            {
+                dbContext.people.Add(persone);
+            }
+            dbContext.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "Ошибка базы данных: " + ex.Message);
+        }
+
+        return Ok();
+    }
+
+    
+    
 }
 
-/*
+
+/*[HttpPost]
+      [Route("FillingInDb")]
+      public IActionResult FillingInDb(int quantity)
+      {
+          using ApplicationDbContext dbContext = new();
+          DataGenerator dataGenerator = new();
+          var persones = new List<People>();
+          
+          for (int i = 0; i < quantity; i++)
+          {
+                var persona = new People
+                      {
+                          firstname = dataGenerator.GenerateRandomFirstName(),
+                          lastname = dataGenerator.GenerateRandomLastName(),
+                          city = dataGenerator.GenerateRandomCity(),
+                          street = dataGenerator.GenerateRandomStreet(),
+                          housenumber = dataGenerator.GenerateRandomHouseNumber(),
+                          phonenumber = dataGenerator.GenerateRandomPhoneNumber()
+                      };
+                persones.Add(persona);
+          }
+        
+  
+          try
+          {
+              foreach (var persone in persones) dbContext.people.Update(persone);
+  
+              dbContext.SaveChanges();
+          }
+          catch (Exception ex)
+          {
+              return StatusCode(500, "Ошибка базы данных: " + ex.Message);
+          }
+  
+          return Ok();
+      }
   public IActionResult SelectPeople(string firstname, string? city, string? NewLastName)
     {
         using ApplicationDbContext dbContext = new();
