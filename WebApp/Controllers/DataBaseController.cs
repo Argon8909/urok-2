@@ -8,38 +8,16 @@ namespace WebApp.Controllers;
 [Route("api/[Controller]")]
 public class DataBaseController : Controller
 {
-    [HttpGet]
-    [Route("GetAllPeople")]
-    public IActionResult GetAllPeople()
-    {
-        using ApplicationDbContext dbContext = new();
-
-        var peoples = dbContext.people
-            //.AsNoTracking()
-            .ToList();
-
-        var peoplesDescription = peoples
-            .Select(x => x
-                    .id + " " + x
-                    .firstname + " " + x
-                    .lastname + " " + x
-                    .city + " " + x
-                    .street + " " + x
-                    .housenumber + " " + x
-                    .phonenumber
-            );
-
-        var result = string.Join("\n", peoplesDescription);
-
-        return Ok(result);
-    }
+   
 
     [HttpGet]
     [Route("SelectPeople")]
-    public IActionResult SelectPeople(string firstname, string? lastName, string? city)
+    public IActionResult SelectPeople(string? firstname, string? lastName, string? city)
     {
         using ApplicationDbContext dbContext = new ApplicationDbContext();
-
+       // var query = dbContext.people.Find();
+       if (string.IsNullOrEmpty(firstname)) return BadRequest("Вы должны указать имя!");
+        
         var query = dbContext.people
             .Where(x => x
                 .firstname
@@ -71,12 +49,21 @@ public class DataBaseController : Controller
         }
 
         var peoples = query.ToList();
-
-        var peoplesDescription = peoples.Select(x => $"{x.id} {x.firstname} {x.lastname} {x.city}");
+        var foundPeopleCount  = peoples.Count;
+        
+        var peoplesDescription = peoples.Select(x =>
+            $"{x.id}\n" +
+            $"Last Name: {x.lastname}\n" +
+            $"First Name: {x.firstname}\n" +
+            $"Phone Number: {x.phonenumber}\n" +
+            $"City: {x.city}\n" +
+            $"Street: {x.street}\n" +
+            $"House Number: {x.housenumber}\n"
+        );
 
         var result = string.Join("\n", peoplesDescription);
 
-        return Ok(result);
+        return Ok($"Найдено {foundPeopleCount} человек. " + "\n" + result);
     }
 
 
@@ -173,7 +160,7 @@ public class DataBaseController : Controller
         using ApplicationDbContext dbContext = new();
         DataGenerator dataGenerator = new();
         var persones = new List<People>();
-    
+
         for (int i = 0; i < quantity; i++)
         {
             var persona = new People
@@ -194,6 +181,7 @@ public class DataBaseController : Controller
             {
                 dbContext.people.Add(persone);
             }
+
             dbContext.SaveChanges();
         }
         catch (Exception ex)
@@ -203,13 +191,38 @@ public class DataBaseController : Controller
 
         return Ok();
     }
-
-    
-    
 }
 
 
-/*[HttpPost]
+/*
+ // [HttpGet]
+   // [Route("GetAllPeople")]
+    public IActionResult GetAllPeople()
+    {
+        using ApplicationDbContext dbContext = new();
+
+        var peoples = dbContext.people
+            //.AsNoTracking()
+            .ToList();
+
+        var peoplesDescription = peoples
+            .Select(x => x
+                    .id + " " + x
+                    .firstname + " " + x
+                    .lastname + " " + x
+                    .city + " " + x
+                    .street + " " + x
+                    .housenumber + " " + x
+                    .phonenumber
+            );
+
+        var result = string.Join("\n", peoplesDescription);
+
+        return Ok(result);
+    }
+ 
+ 
+ [HttpPost]
       [Route("FillingInDb")]
       public IActionResult FillingInDb(int quantity)
       {
